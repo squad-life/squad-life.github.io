@@ -1,0 +1,1 @@
+# squadlife.github.io
