@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <title>Life Shop — донат Supercell</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --bg: #0c0c0e;
+            --surface: #141416;
+            --surface-elevated: #1c1c20;
+            --accent: #7c4dff;
+            --accent-dim: #4a2c9e;
+            --text: #ffffff;
+            --text-secondary: #a0a0b0;
+            --border: rgba(255, 255, 255, 0.06);
+            --radius-card: 24px;
+            --radius-element: 16px;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, 'Inter', system-ui, 'Segoe UI', Helvetica, sans-serif;
+            padding: 0 16px 90px 16px;
+            font-weight: 450;
+            line-height: 1.4;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 540px;
+            margin: 0 auto;
+        }
+
+        /* HEADER — прозрачный, только лого и аватар */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0 20px 0;
+            background: transparent;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo img {
+            height: 58px;
+            width: auto;
+            display: block;
+            filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+            transition: 0.15s;
+        }
+
+        .user-avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: rgba(20,20,30,0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(124, 77, 255, 0.4);
+            overflow: hidden;
+            cursor: pointer;
+            transition: 0.1s ease;
+        }
+        .user-avatar:active {
+            transform: scale(0.96);
+        }
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* МОКО — карточка без лишней рамки у картинки */
+        .moko-teaser {
+            background: rgba(20, 20, 28, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 32px;
+            margin: 4px 0 28px 0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 18px 12px 12px;
+            border: 1px solid rgba(124, 77, 255, 0.25);
+            cursor: pointer;
+            transition: 0.1s ease;
+        }
+        .moko-teaser:active {
+            transform: scale(0.97);
+        }
+        .moko-teaser-img {
+            width: 68px;
+            height: 68px;
+            overflow: hidden;
+            /* нет рамки — картинка сама по себе */
+        }
+        .moko-teaser-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .moko-teaser-text {
+            flex: 1;
+            font-size: 15px;
+            font-weight: 510;
+            color: #dddcee;
+        }
+        .moko-teaser-text span {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        .moko-teaser i {
+            font-size: 18px;
+            color: var(--accent);
+            margin-left: auto;
+        }
+
+        /* Секции */
+        .section {
+            margin-bottom: 32px;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 0 4px;
+            margin-bottom: 16px;
+        }
+        .section-title {
+            font-size: 20px;
+            font-weight: 650;
+            letter-spacing: -0.2px;
+            color: var(--text);
+        }
+        .section-link {
+            font-size: 14px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .section-link:active {
+            transform: scale(0.96);
+        }
+
+        /* Горизонтальные скроллы — скрытые полосы, но с подсказкой (градиент) */
+        .scroll-x {
+            display: flex;
+            gap: 18px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding-bottom: 12px;
+            position: relative;
+        }
+        .scroll-x::-webkit-scrollbar {
+            display: none;
+        }
+        /* тонкая подсказка о прокрутке (правый градиент) */
+        .scroll-wrapper {
+            position: relative;
+        }
+        .scroll-wrapper::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 12px;
+            width: 40px;
+            background: linear-gradient(90deg, transparent, var(--bg));
+            pointer-events: none;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+        /* при скролле до конца — градиент исчезает, но это не критично */
+
+        /* Карточки игр */
+        .game-card {
+            flex: 0 0 auto;
+            width: 86px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .game-card:active {
+            transform: scale(0.95);
+        }
+        .game-icon {
+            width: 86px;
+            height: 86px;
+            background: var(--surface);
+            border-radius: 28px;
+            overflow: hidden;
+            margin-bottom: 8px;
+            border: 1px solid var(--border);
+            transition: 0.2s;
+        }
+        .game-card:hover .game-icon {
+            border-color: var(--accent);
+        }
+        .game-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .game-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        /* Товарные карточки (используются во всех коллекциях) */
+        .product-card {
+            flex: 0 0 auto;
+            width: 164px;
+            background: var(--surface);
+            border-radius: 26px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .product-card:active {
+            transform: scale(0.97);
+        }
+        .product-card:hover {
+            background: var(--surface-elevated);
+            border-color: rgba(124, 77, 255, 0.3);
+        }
+        .product-banner {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: #0a0a0c;
+            overflow: hidden;
+        }
+        .product-banner img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .product-banner img.active {
+            opacity: 1;
+        }
+        .product-info {
+            padding: 12px 12px 14px;
+        }
+        .product-name {
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 6px;
+        }
+        .price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .product-price {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .old-price {
+            font-size: 13px;
+            color: #8e8e9e;
+            text-decoration: line-through;
+        }
+        .discount-badge {
+            background: rgba(124, 77, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent);
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        /* Отзывы */
+        .reviews-card {
+            background: rgba(22, 22, 28, 0.65);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
+            margin-top: 8px;
+        }
+        .reviews-card i {
+            font-size: 32px;
+            color: var(--accent);
+            opacity: 0.8;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+        .reviews-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+        }
+        .reviews-btn {
+            background: rgba(124, 77, 255, 0.2);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .reviews-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* BOTTOM NAV — гласморф, прозрачный, без изменений (уже отлично) */
+        .bottom-nav {
+            position: fixed;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 32px);
+            max-width: 480px;
+            background: rgba(12, 12, 18, 0.55);
+            backdrop-filter: blur(28px);
+            border-radius: 60px;
+            display: flex;
+            justify-content: space-around;
+            padding: 6px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            z-index: 20;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #8e8e9e;
+            font-size: 11px;
+            font-weight: 500;
+            gap: 4px;
+            padding: 8px 16px;
+            border-radius: 50px;
+            transition: 0.2s;
+        }
+        .nav-item.active {
+            color: var(--accent);
+            background: rgba(124, 77, 255, 0.18);
+        }
+        .nav-item:active {
+            transform: scale(0.96);
+        }
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 0.35s ease forwards;
+        }
+        .skeleton {
+            background: linear-gradient(110deg, #1a1a22 30%, #2a2a32 50%, #1a1a22 70%);
+            background-size: 200% 100%;
+            animation: shimmer 1.2s infinite;
+            border-radius: 20px;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .hint-scroll {
+            font-size: 12px;
+            color: #5a5a6e;
+            text-align: right;
+            margin-top: -8px;
+            margin-bottom: 8px;
+            padding-right: 8px;
+        }
+        .hint-scroll i {
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="logo">
+            <img id="logo-img" src="https://raw.githubusercontent.com/squad-life/squad-life.github.io/refs/heads/main/assets/images/logo.png" alt="Life Shop" onerror="this.src='https://placehold.co/120x58/1a1a2e/7c4dff?text=LifeShop'">
+        </div>
+        <div class="user-avatar" id="user-avatar">
+            <img id="avatar-img" src="" alt="avatar">
+        </div>
+    </header>
+
+    <!-- Моко (без лишней рамки у картинки, правильный текст) -->
+    <div class="moko-teaser fade-in" id="mokoTeaser">
+        <div class="moko-teaser-img">
+            <img src="https://raw.githubusercontent.com/squad-life/squad-life.github.io/refs/heads/main/assets/images/moko.png" 
+                 alt="Moko" 
+                 onerror="this.src='https://placehold.co/68x68/252540/7c4dff?text=M'">
+        </div>
+        <div class="moko-teaser-text">
+            <span>Охотник</span>, портал открыт! Улучши свой аутфит перед сражением с монстрами!
+        </div>
+        <i class="fas fa-arrow-right"></i>
+    </div>
+
+    <!-- Игры -->
+    <div class="section">
+        <div class="section-header">
+            <h2 class="section-title">Игры</h2>
+            <a href="game.html" class="section-link" id="allGamesLink">Все <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="scroll-wrapper">
+            <div class="scroll-x" id="gamesContainer"></div>
+            <div class="hint-scroll"><i class="fas fa-arrow-left"></i> листай <i class="fas fa-arrow-right"></i></div>
+        </div>
+    </div>
+
+    <!-- Динамические коллекции (из homepage.json) -->
+    <div id="collectionsContainer"></div>
+
+    <!-- Отзывы -->
+    <div class="reviews-card">
+        <i class="fas fa-message"></i>
+        <p class="reviews-text" id="reviewsText">Честные отзывы игроков</p>
+        <button class="reviews-btn" id="reviewsBtn"><i class="fab fa-telegram"></i> Читать</button>
+    </div>
+</div>
+
+<div class="bottom-nav">
+    <a href="index.html" class="nav-item active">
+        <div class="nav-icon"><i class="fas fa-home"></i></div>
+        <span>Главная</span>
+    </a>
+    <a href="game.html" class="nav-item">
+        <div class="nav-icon"><i class="fas fa-gamepad"></i></div>
+        <span>Игры</span>
+    </a>
+    <a href="account.html" class="nav-item">
+        <div class="nav-icon"><i class="fas fa-user"></i></div>
+        <span>Профиль</span>
+    </a>
+</div>
+
+<script>
+    (function() {
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.enableClosingConfirmation();
+        tg.setHeaderColor('#0c0c0e');
+        tg.setBackgroundColor('#0c0c0e');
+
+        const user = tg.initDataUnsafe.user;
+        const avatarImg = document.getElementById('avatar-img');
+        if (user?.photo_url) avatarImg.src = user.photo_url;
+        else avatarImg.src = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
+        avatarImg.onload = () => avatarImg.classList.remove('skeleton');
+
+        document.getElementById('user-avatar').addEventListener('click', () => {
+            window.location.href = 'account.html';
+        });
+
+        document.getElementById('mokoTeaser').addEventListener('click', () => {
+            window.location.href = 'game.html?game=Moko';
+        });
+
+        document.getElementById('reviewsBtn').addEventListener('click', () => {
+            window.open('https://t.me/akchotzivi', '_blank');
+        });
+
+        // Главная загрузка данных
+        async function loadHomepage() {
+            try {
+                const res = await fetch('data/homepage.json');
+                if (!res.ok) throw new Error('Failed to load homepage data');
+                const data = await res.json();
+                
+                // Отображаем игры
+                renderGames(data.games || []);
+                // Отображаем все коллекции (секции)
+                renderCollections(data.collections || [], data.offers || {});
+                // Отзывы (если есть глобальные)
+                if (data.global_reviews && data.global_reviews.length) {
+                    const reviewsTextElem = document.getElementById('reviewsText');
+                    reviewsTextElem.innerHTML = data.global_reviews[0].text + ' ★' + data.global_reviews[0].rating;
+                }
+            } catch (err) {
+                console.error(err);
+                document.getElementById('gamesContainer').innerHTML = '<div style="color:#888; padding:20px;">Ошибка загрузки данных</div>';
+            }
+        }
+
+        function renderGames(games) {
+            const container = document.getElementById('gamesContainer');
+            if (!games.length) {
+                container.innerHTML = '<div style="color:#888;">Игры не найдены</div>';
+                return;
+            }
+            container.innerHTML = '';
+            games.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'game-card fade-in';
+                card.onclick = () => window.location.href = `game.html?game=${game.slug}`;
+                card.innerHTML = `
+                    <div class="game-icon">
+                        <img src="${game.logo}" alt="${game.name}" onerror="this.src='https://placehold.co/86x86/1a1a2e/7c4dff?text=${game.name.slice(0,2)}'">
+                    </div>
+                    <div class="game-name">${escapeHtml(game.name)}</div>
+                `;
+                container.appendChild(card);
+            });
+            // убираем skeleton
+            document.querySelectorAll('.game-icon img').forEach(img => {
+                img.onload = () => img.classList.remove('skeleton');
+                if (img.complete) img.classList.remove('skeleton');
+                else img.classList.add('skeleton');
+            });
+        }
+
+        function renderCollections(collections, offersMap) {
+            const container = document.getElementById('collectionsContainer');
+            container.innerHTML = '';
+            if (!collections.length) {
+                container.innerHTML = '<div style="color:#888; text-align:center; padding:20px;">Нет коллекций</div>';
+                return;
+            }
+            collections.forEach((col, idx) => {
+                const items = col.items || [];
+                const validItems = items.filter(id => offersMap[id] !== undefined);
+                if (validItems.length === 0) return;
+                
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'section fade-in';
+                sectionDiv.style.animationDelay = `${idx * 0.05}s`;
+                sectionDiv.innerHTML = `
+                    <div class="section-header">
+                        <h2 class="section-title">${escapeHtml(col.title)}</h2>
+                        ${col.link ? `<a href="${col.link}" class="section-link">Все <i class="fas fa-arrow-right"></i></a>` : ''}
+                    </div>
+                    <div class="scroll-wrapper">
+                        <div class="scroll-x" id="scroll-${idx}"></div>
+                        <div class="hint-scroll"><i class="fas fa-arrow-left"></i> листай <i class="fas fa-arrow-right"></i></div>
+                    </div>
+                `;
+                container.appendChild(sectionDiv);
+                const scrollContainer = sectionDiv.querySelector(`.scroll-x`);
+                // рендерим карточки товаров
+                validItems.forEach(offerId => {
+                    const product = offersMap[offerId];
+                    if (!product) return;
+                    const card = createProductCard(product, offerId);
+                    scrollContainer.appendChild(card);
+                });
+                // запускаем ротацию баннеров для карточек внутри этой секции
+                setTimeout(() => {
+                    scrollContainer.querySelectorAll('.product-card').forEach(card => {
+                        const id = card.dataset.id;
+                        if (id) startBannerRotation(id);
+                    });
+                }, 50);
+            });
+        }
+
+        function createProductCard(product, id) {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.dataset.id = id;
+            card.onclick = () => window.location.href = `offer.html?id=${id}`;
+            
+            // Цена: если есть variants, показываем минимальную
+            let displayPrice = product.price;
+            let discount = product.discount || 0;
+            let variants = product.variants;
+            if (variants && variants.length) {
+                const minPrice = Math.min(...variants.map(v => v.price));
+                displayPrice = minPrice;
+                // скидка применяется к minPrice? по логике можно оставить как есть
+            }
+            let finalPrice = discount > 0 ? Math.round(displayPrice * (1 - discount / 100)) : displayPrice;
+            
+            let priceHtml = `<div class="product-price">${finalPrice} ₽</div>`;
+            let discountBadge = '';
+            if (discount > 0) {
+                priceHtml = `
+                    <div class="price-row">
+                        <div class="product-price">${finalPrice} ₽</div>
+                        <div class="old-price">${displayPrice} ₽</div>
+                    </div>
+                `;
+                discountBadge = `<div class="discount-badge">-${discount}%</div>`;
+            } else if (variants && variants.length) {
+                priceHtml = `<div class="product-price">от ${finalPrice} ₽</div>`;
+            }
+            
+            // изображения: product.image (иконка) или баннер1
+            const banner1 = product.banners && product.banners[0] ? product.banners[0] : (product.image || 'https://placehold.co/300x300/1a1a2e/7c4dff?text=offer');
+            const banner2 = product.banners && product.banners[1] ? product.banners[1] : banner1;
+            
+            card.innerHTML = `
+                <div class="product-banner" id="banner-${id}">
+                    <img src="${banner1}" class="active" alt="">
+                    <img src="${banner2}" alt="">
+                </div>
+                <div class="product-info">
+                    <div class="product-name">${escapeHtml(product.name)}</div>
+                    ${priceHtml}
+                    ${discountBadge}
+                </div>
+            `;
+            return card;
+        }
+
+        function startBannerRotation(id) {
+            const div = document.getElementById(`banner-${id}`);
+            if (!div) return;
+            const imgs = div.querySelectorAll('img');
+            if (imgs.length < 2) return;
+            let current = 0;
+            setInterval(() => {
+                imgs[current].classList.remove('active');
+                current = (current + 1) % imgs.length;
+                imgs[current].classList.add('active');
+            }, 4800);
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+        }
+
+        // инициализация
+        const logo = document.getElementById('logo-img');
+        logo.onload = () => logo.classList.remove('skeleton');
+        logo.classList.add('skeleton');
+        avatarImg.classList.add('skeleton');
+        
+        loadHomepage();
+    })();
+</script>
+</body>
+</html>
