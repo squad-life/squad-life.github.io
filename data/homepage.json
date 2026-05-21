@@ -1,0 +1,69 @@
+{
+  "version": 3,
+  "last_updated": "2026-05-21",
+  "banner": {
+    "image": "https://.../main-banner.jpg",
+    "link": "https://.../promo"
+  },
+  "games": [
+    { "slug": "BrawlStars", "name": "Brawl Stars", "logo": "https://raw.githubusercontent.com/squad-life/squad-life.github.io/refs/heads/main/assets/images/games/BrawlStars.png" },
+    { "slug": "ClashRoyale", "name": "Clash Royale", "logo": "https://raw.githubusercontent.com/squad-life/squad-life.github.io/refs/heads/main/assets/images/games/ClashRoyale.png" },
+    { "slug": "MoCo", "name": "Mo.Co", "logo": "https://raw.githubusercontent.com/squad-life/squad-life.github.io/refs/heads/main/assets/images/games/MoCo.png" },
+    { "slug": "ClashOfClans", "name": "Clash Of Clans", "logo": "https://raw.githubusercontent.com/squad-life/squad-life.github.io/refs/heads/main/assets/images/games/ClashOfClans.png" }
+  ],
+  "collections": [
+    {
+      "title": "Популярное",
+      "type": "popular",
+      "items": [100001, 100005, 100012, 100023]
+    },
+    {
+      "title": "Скидки",
+      "type": "discount",
+      "items": [100002, 100008, 100099]
+    },
+    {
+      "title": "Новинки",
+      "type": "new",
+      "items": [100020, 100021, 100105]
+    },
+    {
+      "title": "Для прокачки",
+      "type": "custom",
+      "items": [100050, 100051, 100052]
+    }
+  ],
+  "offers": {
+    "100001": {
+      "name": "Товар 1",
+      "price": 499,
+      "discount": 0,
+      "image": "https://.../offers/100001/icon.png",
+      "banners": ["banner1.png", "banner2.png"],
+      "variants": null
+    },
+    "100002": {
+      "name": "Товар 2",
+      "price": 399,
+      "discount": 20,
+      "image": "...",
+      "variants": [
+        { "name": "1 мес", "price": 399 },
+        { "name": "3 мес", "price": 999 }
+      ]
+    }
+    // ... все товары, которые показываются на главной или могут понадобиться
+  },
+  "global_reviews": [
+    {
+      "avatar": "https://...",
+      "name": "Алекс",
+      "rating": 5,
+      "text": "Быстро, надёжно, всем советую"
+    }
+  ],
+  "promo_banner_bottom": {
+    "text": "Промокод LIFE2026 на скидку 10%",
+    "button": "Активировать"
+  }
+}
