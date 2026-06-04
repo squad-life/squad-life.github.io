@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <title>Товары — Life Shop</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+        :root { --bg: #0c0c0e; --surface: #141416; --surface-elevated: #1c1c20; --accent: #7c4dff; --text: #fff; --text-secondary: #a0a0b0; --border: rgba(255,255,255,0.06); }
+        body { background: var(--bg); color: var(--text); font-family: -apple-system, Inter, system-ui, sans-serif; padding: 0 16px 90px 16px; line-height: 1.4; }
+        .container { max-width: 540px; margin: 0 auto; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 12px 0 20px 0; position: sticky; top: 0; background: var(--bg); z-index: 10; }
+        .logo img { height: 48px; width: auto; }
+        .user-avatar { width: 42px; height: 42px; border-radius: 50%; background: rgba(20,20,30,0.6); backdrop-filter: blur(8px); border: 1px solid rgba(124,77,255,0.4); overflow: hidden; cursor: pointer; }
+        .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .back-btn { background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+        .back-btn:active { background: rgba(255,255,255,0.1); transform: scale(0.95); }
+        .game-banner { width: 100%; border-radius: 28px; margin-bottom: 20px; overflow: hidden; aspect-ratio: 16/9; background: var(--surface); }
+        .game-banner img { width: 100%; height: 100%; object-fit: cover; }
+        .page-title { font-size: 24px; font-weight: 700; margin-bottom: 16px; }
+        .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 30px; }
+        .product-card { background: var(--surface); border-radius: 20px; overflow: hidden; cursor: pointer; border: 1px solid var(--border); }
+        .product-card:active { transform: scale(0.97); }
+        .product-banner { position: relative; width: 100%; aspect-ratio: 1/1; overflow: hidden; }
+        .product-banner img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s; }
+        .product-banner img.active { opacity: 1; }
+        .product-info { padding: 12px; }
+        .product-name { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 6px; }
+        .product-price { font-size: 16px; font-weight: 700; color: var(--accent); }
+        .old-price { font-size: 12px; color: #8e8e9e; text-decoration: line-through; margin-left: 6px; }
+        .discount-badge { background: rgba(124,77,255,0.2); padding: 2px 6px; border-radius: 12px; font-size: 10px; font-weight: 600; color: var(--accent); display: inline-block; margin-top: 4px; }
+        .no-products { text-align: center; padding: 40px; color: var(--text-secondary); }
+        .bottom-nav { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 500px; background: rgba(12,12,18,0.65); backdrop-filter: blur(28px); border-radius: 60px; display: flex; justify-content: space-around; padding: 6px 12px; border: 1px solid rgba(255,255,255,0.12); z-index: 100; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #8e8e9e; font-size: 11px; font-weight: 500; gap: 4px; padding: 8px 16px; border-radius: 50px; }
+        .nav-item.active { color: #7c4dff; background: rgba(124,77,255,0.18); }
+        .nav-item:active { transform: scale(0.96); }
+        .nav-icon { font-size: 22px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-left"></i></button>
+        <div class="logo"><img src="https://raw.githubusercontent.com/squad-life/squad-life.github.io/main/assets/logo.png" alt="Life Shop"></div>
+        <div class="user-avatar" id="user-avatar"><img id="avatar-img" src="" alt="avatar"></div>
+    </header>
+
+    <div class="game-banner" id="gameBanner"><img src="" alt="баннер игры"></div>
+    <h1 class="page-title" id="gameTitle">Загрузка...</h1>
+    <div class="products-grid" id="productsGrid"></div>
+</div>
+
+<div class="bottom-nav">
+    <a href="index.html" class="nav-item"><div class="nav-icon"><i class="fas fa-home"></i></div><span>Главная</span></a>
+    <a href="games.html" class="nav-item"><div class="nav-icon"><i class="fas fa-gamepad"></i></div><span>Игры</span></a>
+    <a href="account.html" class="nav-item"><div class="nav-icon"><i class="fas fa-user"></i></div><span>Профиль</span></a>
+</div>
+
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+    tg.enableClosingConfirmation();
+    tg.setHeaderColor('#0c0c0e');
+    
+    const user = tg.initDataUnsafe.user;
+    document.getElementById('avatar-img').src = user?.photo_url || 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
+    document.getElementById('user-avatar').onclick = () => location.href = 'account.html';
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const gameName = urlParams.get('game');
+    
+    const DATA_BASE = 'https://raw.githubusercontent.com/squad-life/squad-life.github.io/main/data/';
+    let allOffers = [];
+    
+    async function loadData() {
+        try {
+            const [offersRes, gamesRes] = await Promise.all([
+                fetch(DATA_BASE + 'all_offers.json'),
+                fetch(DATA_BASE + 'games.json')
+            ]);
+            const offersData = await offersRes.json();
+            allOffers = offersData.offers || [];
+            const gamesList = await gamesRes.json();
+            
+            const currentGame = gamesList.find(g => g.name === gameName);
+            if (currentGame) {
+                document.getElementById('gameBanner').innerHTML = `<img src="${currentGame.banner || currentGame.logo}" alt="${gameName}">`;
+                document.getElementById('gameTitle').textContent = gameName;
+            } else {
+                document.getElementById('gameTitle').textContent = gameName || 'Игра';
+            }
+            
+            renderProducts();
+        } catch(e) {
+            console.error(e);
+            document.getElementById('productsGrid').innerHTML = '<div class="no-products">Ошибка загрузки товаров</div>';
+        }
+    }
+    
+    function renderProducts() {
+        const filtered = allOffers.filter(offer => offer.game === gameName);
+        const grid = document.getElementById('productsGrid');
+        
+        if (!filtered.length) {
+            grid.innerHTML = '<div class="no-products">Товаров для этой игры пока нет</div>';
+            return;
+        }
+        
+        grid.innerHTML = '';
+        filtered.forEach(product => {
+            const basePrice = product.variants?.length ? product.variants[0].price : (product.price || 0);
+            const finalPrice = product.discount ? Math.round(basePrice * (1 - product.discount/100)) : basePrice;
+            const hasDiscount = product.discount > 0;
+            
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.onclick = () => location.href = `offer.html?id=${product.id}`;
+            card.innerHTML = `
+                <div class="product-banner" id="banner-${product.id}">
+                    <img src="${product.banner1}" class="active" alt="">
+                    <img src="${product.banner2}" alt="">
+                </div>
+                <div class="product-info">
+                    <div class="product-name">${escapeHtml(product.name)}</div>
+                    <div><span class="product-price">${finalPrice} ₽</span>${hasDiscount ? `<span class="old-price">${basePrice} ₽</span>` : ''}</div>
+                    ${hasDiscount ? `<div class="discount-badge">-${product.discount}%</div>` : ''}
+                </div>
+            `;
+            grid.appendChild(card);
+            startBannerRotation(product.id);
+        });
+    }
+    
+    function startBannerRotation(id) {
+        const div = document.getElementById(`banner-${id}`);
+        if (!div) return;
+        const imgs = div.querySelectorAll('img');
+        if (imgs.length < 2) return;
+        let current = 0;
+        setInterval(() => {
+            imgs[current].classList.remove('active');
+            current = (current + 1) % imgs.length;
+            imgs[current].classList.add('active');
+        }, 5000);
+    }
+    
+    function escapeHtml(str) { return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+    loadData();
+</script>
+</body>
+</html>
