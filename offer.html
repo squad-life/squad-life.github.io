@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <title>Товар — Life Shop</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+        :root { --bg: #0c0c0e; --surface: #141416; --surface-elevated: #1c1c20; --accent: #7c4dff; --text: #fff; --text-secondary: #a0a0b0; --border: rgba(255,255,255,0.06); }
+        body { background: var(--bg); color: var(--text); font-family: -apple-system, Inter, system-ui, sans-serif; padding: 0 16px 90px 16px; line-height: 1.4; }
+        .container { max-width: 540px; margin: 0 auto; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 12px 0 20px 0; position: sticky; top: 0; background: var(--bg); z-index: 10; }
+        .logo img { height: 48px; width: auto; }
+        .user-avatar { width: 42px; height: 42px; border-radius: 50%; background: rgba(20,20,30,0.6); backdrop-filter: blur(8px); border: 1px solid rgba(124,77,255,0.4); overflow: hidden; cursor: pointer; }
+        .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .back-btn { background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+        .back-btn:active { background: rgba(255,255,255,0.1); transform: scale(0.95); }
+        .offer-banner { width: 100%; border-radius: 28px; margin-bottom: 20px; overflow: hidden; aspect-ratio: 1/1; background: var(--surface); position: relative; }
+        .offer-banner img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s; }
+        .offer-banner img.active { opacity: 1; }
+        .offer-title { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .offer-description { color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5; }
+        .price-section { margin-bottom: 24px; }
+        .price-main { font-size: 34px; font-weight: 800; color: var(--accent); }
+        .price-old { font-size: 20px; color: #8e8e9e; text-decoration: line-through; margin-left: 12px; }
+        .discount-badge { background: rgba(124,77,255,0.2); padding: 4px 12px; border-radius: 20px; font-size: 14px; font-weight: 600; color: var(--accent); display: inline-block; margin-left: 12px; }
+        .variants-section { margin-bottom: 24px; }
+        .variants-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
+        .variants-grid { display: flex; gap: 12px; flex-wrap: wrap; }
+        .variant-btn { background: var(--surface); border: 1px solid var(--border); padding: 12px 20px; border-radius: 40px; font-size: 15px; font-weight: 500; cursor: pointer; transition: 0.2s; }
+        .variant-btn.selected { background: var(--accent); border-color: var(--accent); color: white; }
+        .variant-btn:active { transform: scale(0.95); }
+        .buy-btn { width: 100%; background: var(--accent); border: none; padding: 16px; border-radius: 60px; font-size: 18px; font-weight: 700; color: white; cursor: pointer; transition: 0.2s; margin-bottom: 16px; }
+        .buy-btn:active { transform: scale(0.97); }
+        .bottom-nav { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 500px; background: rgba(12,12,18,0.65); backdrop-filter: blur(28px); border-radius: 60px; display: flex; justify-content: space-around; padding: 6px 12px; border: 1px solid rgba(255,255,255,0.12); z-index: 100; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #8e8e9e; font-size: 11px; font-weight: 500; gap: 4px; padding: 8px 16px; border-radius: 50px; }
+        .nav-item.active { color: #7c4dff; background: rgba(124,77,255,0.18); }
+        .nav-icon { font-size: 22px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-left"></i></button>
+        <div class="logo"><img src="https://raw.githubusercontent.com/squad-life/squad-life.github.io/main/assets/logo.png" alt="Life Shop"></div>
+        <div class="user-avatar" id="user-avatar"><img id="avatar-img" src="" alt="avatar"></div>
+    </header>
+
+    <div class="offer-banner" id="offerBanner"></div>
+    <h1 class="offer-title" id="offerTitle">Загрузка...</h1>
+    <p class="offer-description" id="offerDesc"></p>
+    
+    <div class="price-section" id="priceSection"></div>
+    
+    <div class="variants-section" id="variantsSection" style="display:none;">
+        <div class="variants-title">Выберите вариант</div>
+        <div class="variants-grid" id="variantsGrid"></div>
+    </div>
+    
+    <button class="buy-btn" id="buyBtn">Купить</button>
+</div>
+
+<div class="bottom-nav">
+    <a href="index.html" class="nav-item"><div class="nav-icon"><i class="fas fa-home"></i></div><span>Главная</span></a>
+    <a href="games.html" class="nav-item"><div class="nav-icon"><i class="fas fa-gamepad"></i></div><span>Игры</span></a>
+    <a href="account.html" class="nav-item"><div class="nav-icon"><i class="fas fa-user"></i></div><span>Профиль</span></a>
+</div>
+
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+    tg.enableClosingConfirmation();
+    tg.setHeaderColor('#0c0c0e');
+    
+    const user = tg.initDataUnsafe.user;
+    document.getElementById('avatar-img').src = user?.photo_url || 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
+    document.getElementById('user-avatar').onclick = () => location.href = 'account.html';
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = parseInt(urlParams.get('id'));
+    
+    const DATA_BASE = 'https://raw.githubusercontent.com/squad-life/squad-life.github.io/main/data/';
+    let product = null;
+    let selectedVariant = 0;
+    
+    async function loadOffer() {
+        try {
+            const res = await fetch(DATA_BASE + 'all_offers.json');
+            const data = await res.json();
+            product = data.offers.find(o => o.id === productId);
+            if (!product) throw new Error('Товар не найден');
+            
+            document.getElementById('offerTitle').textContent = product.name;
+            document.getElementById('offerDesc').textContent = product.description || 'Описание отсутствует';
+            
+            // баннеры
+            const bannerDiv = document.getElementById('offerBanner');
+            bannerDiv.innerHTML = `
+                <img src="${product.banner1}" class="active" alt="">
+                <img src="${product.banner2}" alt="">
+            `;
+            startBannerRotation();
+            
+            // варианты или обычная цена
+            if (product.variants && product.variants.length > 0) {
+                document.getElementById('variantsSection').style.display = 'block';
+                renderVariants();
+                updatePrice();
+            } else {
+                renderSimplePrice();
+            }
+        } catch(e) {
+            console.error(e);
+            document.getElementById('offerTitle').textContent = 'Товар не найден';
+        }
+    }
+    
+    function renderVariants() {
+        const grid = document.getElementById('variantsGrid');
+        grid.innerHTML = '';
+        product.variants.forEach((variant, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'variant-btn' + (idx === selectedVariant ? ' selected' : '');
+            btn.textContent = `${variant.name} — ${variant.price} ₽`;
+            btn.onclick = () => {
+                selectedVariant = idx;
+                document.querySelectorAll('.variant-btn').forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                updatePrice();
+            };
+            grid.appendChild(btn);
+        });
+    }
+    
+    function updatePrice() {
+        const variant = product.variants[selectedVariant];
+        let price = variant.price;
+        let oldPrice = null;
+        let discountHtml = '';
+        
+        if (product.discount && product.discount > 0) {
+            oldPrice = price;
+            price = Math.round(price * (1 - product.discount / 100));
+            discountHtml = `<span class="discount-badge">-${product.discount}%</span>`;
+        }
+        
+        document.getElementById('priceSection').innerHTML = `
+            <span class="price-main">${price} ₽</span>
+            ${oldPrice ? `<span class="price-old">${oldPrice} ₽</span>` : ''}
+            ${discountHtml}
+        `;
+    }
+    
+    function renderSimplePrice() {
+        let price = product.price;
+        let oldPrice = null;
+        let discountHtml = '';
+        
+        if (product.discount && product.discount > 0) {
+            oldPrice = price;
+            price = Math.round(price * (1 - product.discount / 100));
+            discountHtml = `<span class="discount-badge">-${product.discount}%</span>`;
+        }
+        
+        document.getElementById('priceSection').innerHTML = `
+            <span class="price-main">${price} ₽</span>
+            ${oldPrice ? `<span class="price-old">${oldPrice} ₽</span>` : ''}
+            ${discountHtml}
+        `;
+    }
+    
+    function startBannerRotation() {
+        const bannerDiv = document.getElementById('offerBanner');
+        const imgs = bannerDiv.querySelectorAll('img');
+        if (imgs.length < 2) return;
+        let current = 0;
+        setInterval(() => {
+            imgs[current].classList.remove('active');
+            current = (current + 1) % imgs.length;
+            imgs[current].classList.add('active');
+        }, 5000);
+    }
+    
+    document.getElementById('buyBtn').onclick = () => {
+        const variantPrice = product.variants?.length ? product.variants[selectedVariant].price : product.price;
+        const finalPrice = product.discount ? Math.round(variantPrice * (1 - product.discount/100)) : variantPrice;
+        const purchaseData = {
+            id: product.id,
+            name: product.name,
+            price: finalPrice,
+            variant: product.variants?.length ? selectedVariant : null
+        };
+        window.location.href = `purchase.html?data=${encodeURIComponent(JSON.stringify(purchaseData))}`;
+    };
+    
+    loadOffer();
+</script>
+</body>
+</html>
