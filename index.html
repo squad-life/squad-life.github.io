@@ -1,224 +1,205 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-    <title>Life Shop — донат в игры</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
-        :root { --bg: #0c0c0e; --surface: #141416; --surface-elevated: #1c1c20; --accent: #7c4dff; --text: #fff; --text-secondary: #a0a0b0; --border: rgba(255,255,255,0.06); }
-        body { background: var(--bg); color: var(--text); font-family: -apple-system, Inter, system-ui, sans-serif; padding: 0 16px 90px 16px; line-height: 1.4; }
-        .container { max-width: 540px; margin: 0 auto; }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 12px 0 20px 0; position: sticky; top: 0; background: var(--bg); z-index: 10; }
-        .logo img { height: 58px; width: auto; }
-        .user-avatar { width: 46px; height: 46px; border-radius: 50%; background: rgba(20,20,30,0.6); backdrop-filter: blur(8px); border: 1px solid rgba(124,77,255,0.4); overflow: hidden; cursor: pointer; }
-        .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .moko-teaser { background: rgba(20,20,28,0.7); backdrop-filter: blur(12px); border-radius: 32px; margin: 4px 0 28px; display: flex; align-items: center; gap: 16px; padding: 12px 18px 12px 12px; border: 1px solid rgba(124,77,255,0.25); cursor: pointer; }
-        .moko-teaser:active { transform: scale(0.97); }
-        .moko-teaser-img { width: 68px; height: 68px; overflow: hidden; border-radius: 24px; }
-        .moko-teaser-img img { width: 100%; height: 100%; object-fit: cover; }
-        .moko-teaser-text { flex: 1; font-size: 15px; font-weight: 510; color: #dddcee; }
-        .moko-teaser-text span { color: var(--accent); font-weight: 600; }
-        .moko-teaser i { font-size: 18px; color: var(--accent); }
-        .section { margin-bottom: 32px; }
-        .section-header { display: flex; justify-content: space-between; align-items: baseline; padding: 0 4px; margin-bottom: 16px; }
-        .section-title { font-size: 20px; font-weight: 650; color: var(--text); }
-        .section-link { font-size: 14px; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 6px; }
-        .games-scroll, .products-scroll { display: flex; gap: 18px; overflow-x: auto; scrollbar-width: none; padding-bottom: 12px; }
-        .games-scroll::-webkit-scrollbar, .products-scroll::-webkit-scrollbar { display: none; }
-        .game-card { flex: 0 0 auto; width: 86px; text-align: center; cursor: pointer; }
-        .game-card:active { transform: scale(0.95); }
-        .game-icon { width: 86px; height: 86px; background: var(--surface); border-radius: 28px; overflow: hidden; margin-bottom: 8px; border: 1px solid var(--border); }
-        .game-icon img { width: 100%; height: 100%; object-fit: cover; }
-        .game-name { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
-        .product-card { flex: 0 0 auto; width: 164px; background: var(--surface); border-radius: 26px; overflow: hidden; cursor: pointer; border: 1px solid var(--border); }
-        .product-card:active { transform: scale(0.97); }
-        .product-banner { position: relative; width: 100%; aspect-ratio: 1/1; background: #0a0a0c; overflow: hidden; }
-        .product-banner img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s; }
-        .product-banner img.active { opacity: 1; }
-        .product-info { padding: 12px; }
-        .product-name { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 6px; }
-        .product-price { font-size: 17px; font-weight: 700; color: var(--accent); }
-        .old-price { font-size: 13px; color: #8e8e9e; text-decoration: line-through; margin-left: 8px; }
-        .discount-badge { background: rgba(124,77,255,0.2); padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; color: var(--accent); display: inline-block; margin-top: 4px; }
-        .reviews-card { background: rgba(22,22,28,0.65); backdrop-filter: blur(12px); border-radius: 28px; padding: 20px; text-align: center; margin-top: 8px; }
-        .reviews-card i { font-size: 32px; color: var(--accent); margin-bottom: 8px; }
-        .reviews-text { font-size: 14px; color: var(--text-secondary); margin-bottom: 14px; }
-        .reviews-btn { background: rgba(124,77,255,0.2); border: none; padding: 10px 20px; border-radius: 40px; color: var(--accent); font-weight: 600; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
-        .reviews-btn:active { transform: scale(0.96); }
-        .bottom-nav { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 500px; background: rgba(12,12,18,0.65); backdrop-filter: blur(28px); border-radius: 60px; display: flex; justify-content: space-around; padding: 6px 12px; border: 1px solid rgba(255,255,255,0.12); z-index: 100; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #8e8e9e; font-size: 11px; font-weight: 500; gap: 4px; padding: 8px 16px; border-radius: 50px; }
-        .nav-item.active { color: #7c4dff; background: rgba(124,77,255,0.18); }
-        .nav-item:active { transform: scale(0.96); }
-        .nav-icon { font-size: 22px; }
-        .skeleton { background: linear-gradient(110deg,#1a1a22 30%,#2a2a32 50%,#1a1a22 70%); background-size: 200% 100%; animation: shimmer 1.2s infinite; }
-        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { opacity: 0; animation: fadeIn 0.35s ease forwards; }
-    </style>
+  <!-- Вставка компонента head (позже заменим на include) -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* ===== все стили как в прошлом стабильном варианте ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+    :root { --bg: #0c0c0e; --surface: #141416; --surface-elevated: #1c1c20; --accent: #7c4dff; --accent-dim: #4a2c9e; --text: #ffffff; --text-secondary: #a0a0b0; --border: rgba(255,255,255,0.06); --radius-card: 24px; --radius-element: 16px; }
+    body { background-color: var(--bg); color: var(--text); font-family: -apple-system, 'Inter', system-ui; padding: 0 16px 90px 16px; font-weight: 450; line-height: 1.4; -webkit-font-smoothing: antialiased; }
+    .container { max-width: 540px; margin: 0 auto; }
+    header { display: flex; justify-content: space-between; align-items: center; padding: 12px 0 20px 0; background: transparent; position: sticky; top: 0; z-index: 10; }
+    .logo img { height: 58px; width: auto; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3)); }
+    .user-avatar { width: 46px; height: 46px; border-radius: 50%; background: rgba(20,20,30,0.6); backdrop-filter: blur(8px); border: 1px solid rgba(124,77,255,0.4); overflow: hidden; cursor: pointer; }
+    .user-avatar:active { transform: scale(0.96); }
+    .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .moko-teaser { background: rgba(20,20,28,0.7); backdrop-filter: blur(12px); border-radius: 32px; margin: 4px 0 28px; display: flex; align-items: center; gap: 16px; padding: 12px 18px 12px 12px; border: 1px solid rgba(124,77,255,0.25); cursor: pointer; transition: 0.1s; }
+    .moko-teaser:active { transform: scale(0.97); }
+    .moko-teaser-img { width: 68px; height: 68px; overflow: hidden; border-radius: 20px; }
+    .moko-teaser-img img { width: 100%; height: 100%; object-fit: cover; }
+    .moko-teaser-text { flex: 1; font-size: 15px; font-weight: 510; color: #dddcee; }
+    .moko-teaser-text span { color: var(--accent); font-weight: 600; }
+    .moko-teaser i { font-size: 18px; color: var(--accent); margin-left: auto; }
+    .section { margin-bottom: 32px; }
+    .section-header { display: flex; justify-content: space-between; align-items: baseline; padding: 0 4px; margin-bottom: 16px; }
+    .section-title { font-size: 20px; font-weight: 650; letter-spacing: -0.2px; color: var(--text); }
+    .section-link { font-size: 14px; color: var(--accent); text-decoration: none; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+    .section-link:active { transform: scale(0.96); }
+    .games-scroll, .products-scroll { display: flex; gap: 18px; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; padding-bottom: 12px; }
+    .games-scroll::-webkit-scrollbar, .products-scroll::-webkit-scrollbar { display: none; }
+    .game-card { flex: 0 0 auto; width: 86px; text-align: center; cursor: pointer; }
+    .game-card:active { transform: scale(0.95); }
+    .game-icon { width: 86px; height: 86px; background: var(--surface); border-radius: 28px; overflow: hidden; margin-bottom: 8px; border: 1px solid var(--border); }
+    .game-icon img { width: 100%; height: 100%; object-fit: cover; }
+    .game-name { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+    .product-card { flex: 0 0 auto; width: 164px; background: var(--surface); border-radius: 26px; overflow: hidden; cursor: pointer; border: 1px solid var(--border); transition: 0.2s; }
+    .product-card:active { transform: scale(0.97); }
+    .product-banner { position: relative; width: 100%; aspect-ratio: 1/1; background: #0a0a0c; overflow: hidden; }
+    .product-banner img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s; }
+    .product-banner img.active { opacity: 1; }
+    .product-info { padding: 12px; }
+    .product-name { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 6px; }
+    .price-row { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+    .product-price { font-size: 17px; font-weight: 700; color: var(--accent); }
+    .old-price { font-size: 13px; color: #8e8e9e; text-decoration: line-through; }
+    .discount-badge { background: rgba(124,77,255,0.2); padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; color: var(--accent); display: inline-block; margin-top: 4px; }
+    .reviews-card { background: rgba(22,22,28,0.65); backdrop-filter: blur(12px); border-radius: 28px; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.05); margin-top: 8px; }
+    .reviews-card i { font-size: 32px; color: var(--accent); opacity: 0.8; margin-bottom: 8px; display: inline-block; }
+    .reviews-text { font-size: 14px; color: var(--text-secondary); margin-bottom: 14px; }
+    .reviews-btn { background: rgba(124,77,255,0.2); border: none; padding: 10px 20px; border-radius: 40px; color: var(--accent); font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+    .reviews-btn:active { transform: scale(0.96); }
+    .skeleton { background: linear-gradient(110deg, #1a1a22 30%, #2a2a32 50%, #1a1a22 70%); background-size: 200% 100%; animation: shimmer 1.2s infinite; border-radius: 20px; }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { opacity: 0; animation: fadeIn 0.35s ease forwards; }
+    .delay-1 { animation-delay: 0.05s; } .delay-2 { animation-delay: 0.1s; } .delay-3 { animation-delay: 0.15s; } .delay-4 { animation-delay: 0.2s; }
+  </style>
+  <title>Life Shop — главная</title>
 </head>
 <body>
 <div class="container">
-    <header>
-        <div class="logo"><img id="logo-img" src="https://raw.githubusercontent.com/squad-life/squad-life.github.io/main/assets/logo.png" alt="Life Shop" onerror="this.src='https://placehold.co/200x60/141416/7c4dff?text=Life+Shop'"></div>
-        <div class="user-avatar" id="user-avatar"><img id="avatar-img" src="" alt="avatar"></div>
-    </header>
+  <header>
+    <div class="logo"><img id="logo-img" src="https://raw.githubusercontent.com/squad-life/squad-life.github.io/main/assets/logo.png" alt="Life Shop"></div>
+    <div class="user-avatar" id="user-avatar"><img id="avatar-img" src="" alt="avatar"></div>
+  </header>
 
-    <div class="moko-teaser fade-in" id="mokoTeaser">
-        <div class="moko-teaser-img"><img src="https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/refs/heads/main/assets/moco_Luna_tough_shades_1052x1378.png" alt="Moko" onerror="this.src='https://placehold.co/68x68/252540/7c4dff?text=M'"></div>
-        <div class="moko-teaser-text"><span>Охотник</span>, портал открыт! Улучши свой аутфит перед сражением с монстрами!</div>
-        <i class="fas fa-arrow-right"></i>
-    </div>
+  <div class="moko-teaser fade-in" id="mokoTeaser">
+    <div class="moko-teaser-img"><img src="https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/refs/heads/main/assets/moco_Luna_tough_shades_1052x1378.png" alt="Moko"></div>
+    <div class="moko-teaser-text"><span>Охотник</span>, портал открыт! Улучши свой аутфит перед сражением с монстрами!</div>
+    <i class="fas fa-arrow-right"></i>
+  </div>
 
-    <div class="section">
-        <div class="section-header"><h2 class="section-title">Игры</h2><a href="games.html" class="section-link">Все <i class="fas fa-arrow-right"></i></a></div>
-        <div class="games-scroll" id="gamesContainer"></div>
-    </div>
+  <div class="section">
+    <div class="section-header"><h2 class="section-title">Игры</h2><a href="games.html" class="section-link">Все <i class="fas fa-arrow-right"></i></a></div>
+    <div class="games-scroll" id="gamesContainer"></div>
+  </div>
 
-    <div class="section" id="discountSection" style="display:none;"><div class="section-header"><h2 class="section-title">Скидки</h2></div><div class="products-scroll" id="discountContainer"></div></div>
-    <div class="section"><div class="section-header"><h2 class="section-title">Популярное</h2></div><div class="products-scroll" id="popularContainer"></div></div>
-    <div class="section" id="newSection" style="display:none;"><div class="section-header"><h2 class="section-title">Новинки</h2></div><div class="products-scroll" id="newContainer"></div></div>
+  <div class="section" id="discountSection" style="display: none;"><div class="section-header"><h2 class="section-title">Скидки</h2></div><div class="products-scroll" id="discountContainer"></div></div>
+  <div class="section" id="popularSection" style="display: none;"><div class="section-header"><h2 class="section-title">Популярное</h2></div><div class="products-scroll" id="popularContainer"></div></div>
+  <div class="section" id="newSection" style="display: none;"><div class="section-header"><h2 class="section-title">Новинки</h2></div><div class="products-scroll" id="newContainer"></div></div>
 
-    <div class="reviews-card"><i class="fas fa-message"></i><p class="reviews-text">Честные отзывы игроков, Telegram-канал</p><button class="reviews-btn" id="reviewsBtn"><i class="fab fa-telegram"></i> Читать</button></div>
+  <div class="reviews-card"><i class="fas fa-message"></i><p class="reviews-text">Честные отзывы игроков, Telegram-канал</p><button class="reviews-btn" id="reviewsBtn"><i class="fab fa-telegram"></i> Читать</button></div>
 </div>
-
-<div class="bottom-nav">
-    <a href="index.html" class="nav-item active"><div class="nav-icon"><i class="fas fa-home"></i></div><span>Главная</span></a>
-    <a href="games.html" class="nav-item"><div class="nav-icon"><i class="fas fa-gamepad"></i></div><span>Игры</span></a>
-    <a href="account.html" class="nav-item"><div class="nav-icon"><i class="fas fa-user"></i></div><span>Профиль</span></a>
-</div>
+<div id="bottomNav"></div>
 
 <script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
-    tg.enableClosingConfirmation();
-    tg.setHeaderColor('#0c0c0e');
-    
-    const user = tg.initDataUnsafe.user;
-    const avatarImg = document.getElementById('avatar-img');
-    avatarImg.src = user?.photo_url || 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
-    
-    document.getElementById('user-avatar').onclick = () => location.href = 'account.html';
-    document.getElementById('mokoTeaser').onclick = () => location.href = 'game.html?game=Moko';
-    document.getElementById('reviewsBtn').onclick = () => window.open('https://t.me/akchotzivi', '_blank');
-    
-    const DATA_BASE = 'https://raw.githubusercontent.com/squad-life/squad-life.github.io/main/data/';
-    let allOffers = [];
-    
-    async function loadData() {
-        try {
-            const [offersRes, gamesRes, collectionsRes] = await Promise.all([
-                fetch(DATA_BASE + 'all_offers.json'),
-                fetch(DATA_BASE + 'games.json'),
-                fetch(DATA_BASE + 'collections.json')
-            ]);
-            const offersData = await offersRes.json();
-            allOffers = offersData.offers || [];
-            const gamesList = await gamesRes.json();
-            const collections = await collectionsRes.json();
-            
-            renderGames(gamesList);
-            renderCollections(collections);
-        } catch(e) {
-            console.error(e);
-            document.getElementById('gamesContainer').innerHTML = '<div style="color:#888;padding:20px;">Ошибка загрузки данных</div>';
-        }
+  const tg = window.Telegram.WebApp;
+  tg.expand(); tg.enableClosingConfirmation(); tg.setHeaderColor('#0c0c0e'); tg.setBackgroundColor('#0c0c0e');
+  const user = tg.initDataUnsafe.user;
+  const avatarImg = document.getElementById('avatar-img');
+  avatarImg.src = user?.photo_url || 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
+  document.getElementById('user-avatar').onclick = () => location.href = 'account.html';
+  document.getElementById('mokoTeaser').onclick = () => location.href = 'game.html?game=Moko';
+  document.getElementById('reviewsBtn').onclick = () => window.open('https://t.me/akchotzivi', '_blank');
+
+  const DATA_BASE = 'https://raw.githubusercontent.com/squad-life/squad-life.github.io/main/data/';
+  let allOffers = [], gamesList = [];
+  let collections = { popular: [], discount: [], new: [] };
+
+  async function loadData() {
+    try {
+      const [offersRes, gamesRes, collectionsRes] = await Promise.all([
+        fetch(`${DATA_BASE}all_offers.json`), fetch(`${DATA_BASE}games.json`), fetch(`${DATA_BASE}collections.json`)
+      ]);
+      if (offersRes.ok) allOffers = (await offersRes.json()).offers || [];
+      if (gamesRes.ok) gamesList = await gamesRes.json();
+      if (collectionsRes.ok) collections = await collectionsRes.json();
+      renderGames();
+      renderSections();
+    } catch(e) { console.error(e); fallbackRender(); }
+  }
+
+  function renderGames() {
+    const container = document.getElementById('gamesContainer');
+    if (!gamesList.length) { container.innerHTML = '<div style="color:#888; padding:12px;">Игры не загружены</div>'; return; }
+    container.innerHTML = '';
+    gamesList.slice(0, 8).forEach((game, idx) => {
+      const card = document.createElement('div');
+      card.className = `game-card fade-in delay-${(idx % 4) + 1}`;
+      card.onclick = () => location.href = `game.html?game=${encodeURIComponent(game.name)}`;
+      card.innerHTML = `<div class="game-icon"><img src="${game.logo}" alt="${game.name}" onerror="this.src='https://placehold.co/86x86/1c1c20/7c4dff?text=${game.name.charAt(0)}'"></div><div class="game-name">${game.name}</div>`;
+      container.appendChild(card);
+    });
+  }
+
+  function renderSections() {
+    // скидки
+    if (collections.discount?.length) {
+      const discountProducts = collections.discount.map(id => allOffers.find(o => o.id === id)).filter(Boolean);
+      if (discountProducts.length) {
+        document.getElementById('discountSection').style.display = 'block';
+        renderProductList(discountProducts, 'discountContainer');
+      }
     }
-    
-    function renderGames(games) {
-        const container = document.getElementById('gamesContainer');
-        if (!games.length) { container.innerHTML = '<div style="color:#888;">Игры не загружены</div>'; return; }
-        container.innerHTML = '';
-        games.slice(0,8).forEach((game, idx) => {
-            const card = document.createElement('div');
-            card.className = `game-card fade-in delay-${(idx%4)+1}`;
-            card.onclick = () => location.href = `game.html?game=${encodeURIComponent(game.name)}`;
-            card.innerHTML = `<div class="game-icon"><img src="${game.logo}" alt="${game.name}" onerror="this.src='https://placehold.co/86x86/1c1c20/7c4dff?text=${game.name.charAt(0)}'"></div><div class="game-name">${escapeHtml(game.name)}</div>`;
-            container.appendChild(card);
-        });
+    // популярное (если пусто — покажем 4 товара из скидок или новинок)
+    let popularProducts = [];
+    if (collections.popular?.length) popularProducts = collections.popular.map(id => allOffers.find(o => o.id === id)).filter(Boolean);
+    if (!popularProducts.length) {
+      const backup = [...(collections.discount || []), ...(collections.new || [])].slice(0, 6);
+      popularProducts = backup.map(id => allOffers.find(o => o.id === id)).filter(Boolean);
     }
-    
-    function renderCollections(collections) {
-        const offersMap = Object.fromEntries(allOffers.map(o => [o.id, o]));
-        
-        if (collections.popular?.length) {
-            const products = collections.popular.map(id => offersMap[id]).filter(Boolean);
-            renderProductList(products, 'popularContainer');
-        } else {
-            document.getElementById('popularContainer').innerHTML = '<div style="color:#888;padding:24px;">Популярные товары скоро появятся</div>';
-        }
-        
-        if (collections.discount?.length) {
-            const products = collections.discount.map(id => offersMap[id]).filter(Boolean);
-            if (products.length) {
-                document.getElementById('discountSection').style.display = 'block';
-                renderProductList(products, 'discountContainer');
-            }
-        }
-        
-        if (collections.new?.length) {
-            const products = collections.new.map(id => offersMap[id]).filter(Boolean);
-            if (products.length) {
-                document.getElementById('newSection').style.display = 'block';
-                renderProductList(products, 'newContainer');
-            }
-        }
+    if (popularProducts.length) {
+      document.getElementById('popularSection').style.display = 'block';
+      renderProductList(popularProducts.slice(0, 8), 'popularContainer');
     }
-    
-    function renderProductList(products, containerId) {
-        const container = document.getElementById(containerId);
-        if (!products.length) { container.innerHTML = '<div style="color:#888;padding:24px;">Нет товаров</div>'; return; }
-        container.innerHTML = '';
-        products.forEach((product, idx) => {
-            const basePrice = product.variants?.length ? product.variants[0].price : (product.price || 0);
-            const finalPrice = product.discount ? Math.round(basePrice * (1 - product.discount/100)) : basePrice;
-            const hasDiscount = product.discount > 0;
-            let priceHtml = `<div class="product-price">${finalPrice} ₽</div>`;
-            let discountHtml = '';
-            if (hasDiscount) {
-                priceHtml = `<div><div class="product-price">${finalPrice} ₽</div><div class="old-price">${basePrice} ₽</div></div>`;
-                discountHtml = `<div class="discount-badge">-${product.discount}%</div>`;
-            }
-            const card = document.createElement('div');
-            card.className = `product-card fade-in delay-${(idx%4)+1}`;
-            card.onclick = () => location.href = `offer.html?id=${product.id}`;
-            card.innerHTML = `
-                <div class="product-banner" id="banner-${product.id}">
-                    <img src="${product.banner1}" class="active" alt="">
-                    <img src="${product.banner2}" alt="">
-                </div>
-                <div class="product-info">
-                    <div class="product-name">${escapeHtml(product.name)}</div>
-                    ${priceHtml}
-                    ${discountHtml}
-                </div>
-            `;
-            container.appendChild(card);
-            startBannerRotation(product.id);
-        });
+    // новинки
+    if (collections.new?.length) {
+      const newProducts = collections.new.map(id => allOffers.find(o => o.id === id)).filter(Boolean);
+      if (newProducts.length) {
+        document.getElementById('newSection').style.display = 'block';
+        renderProductList(newProducts.slice(0, 8), 'newContainer');
+      }
     }
-    
-    function startBannerRotation(id) {
-        const bannerDiv = document.getElementById(`banner-${id}`);
-        if (!bannerDiv) return;
-        const imgs = bannerDiv.querySelectorAll('img');
-        if (imgs.length < 2) return;
-        let current = 0;
-        setInterval(() => {
-            imgs[current].classList.remove('active');
-            current = (current + 1) % imgs.length;
-            imgs[current].classList.add('active');
-        }, 5000);
-    }
-    
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
-    }
-    
-    loadData();
+  }
+
+  function renderProductList(products, containerId) {
+    const container = document.getElementById(containerId);
+    if (!products.length) { container.innerHTML = '<div style="color:#888; padding:24px;">Нет товаров</div>'; return; }
+    container.innerHTML = '';
+    products.forEach((product, idx) => {
+      const basePrice = product.variants?.length ? product.variants[0].price : (product.price || 0);
+      const finalPrice = product.discount ? Math.round(basePrice * (1 - product.discount / 100)) : basePrice;
+      const priceHtml = product.discount ? `<div class="price-row"><div class="product-price">${finalPrice} ₽</div><div class="old-price">${basePrice} ₽</div></div>` : `<div class="product-price">${finalPrice} ₽</div>`;
+      const discountBadge = product.discount ? `<div class="discount-badge">-${product.discount}%</div>` : '';
+      const card = document.createElement('div');
+      card.className = `product-card fade-in delay-${(idx % 4) + 1}`;
+      card.onclick = () => location.href = `offer.html?id=${product.id}`;
+      card.innerHTML = `<div class="product-banner" id="banner-${product.id}"><img src="${product.banner1}" class="active" alt=""><img src="${product.banner2}" alt=""></div><div class="product-info"><div class="product-name">${escapeHtml(product.name)}</div>${priceHtml}${discountBadge}</div>`;
+      container.appendChild(card);
+      startBannerRotation(product.id);
+    });
+  }
+
+  function startBannerRotation(id) {
+    const bannerDiv = document.getElementById(`banner-${id}`);
+    if (!bannerDiv) return;
+    const imgs = bannerDiv.querySelectorAll('img');
+    if (imgs.length < 2) return;
+    let current = 0;
+    setInterval(() => { imgs[current].classList.remove('active'); current = (current + 1) % imgs.length; imgs[current].classList.add('active'); }, 5000);
+  }
+
+  function escapeHtml(str) { return str?.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])) || ''; }
+
+  function fallbackRender() { /* минимальный фолбэк */ }
+
+  async function loadBottomNav() {
+    const resp = await fetch('components/nav-bar.html');
+    const html = await resp.text();
+    document.getElementById('bottomNav').innerHTML = html;
+    // подсветка активного пункта
+    document.querySelectorAll('.nav-item-glass').forEach(link => {
+      if (link.getAttribute('href') === 'index.html') link.classList.add('active');
+      else link.classList.remove('active');
+    });
+  }
+
+  loadBottomNav();
+  loadData();
 </script>
 </body>
 </html>
