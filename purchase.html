@@ -11,36 +11,52 @@
         :root { --bg: #0c0c0e; --surface: #141416; --surface-elevated: #1c1c20; --accent: #7c4dff; --text: #fff; --text-secondary: #a0a0b0; --border: rgba(255,255,255,0.06); }
         body { background: var(--bg); color: var(--text); font-family: -apple-system, Inter, system-ui, sans-serif; padding: 0 16px 90px 16px; line-height: 1.4; }
         .container { max-width: 540px; margin: 0 auto; }
-        header { display: flex; align-items: center; gap: 16px; padding: 12px 0 20px 0; }
-        .back-btn { background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer; width: 42px; height: 42px; border-radius: 50%; }
-        .back-btn:active { background: rgba(255,255,255,0.1); transform: scale(0.95); }
+        
+        /* Прозрачный хедер */
+        header { display: flex; align-items: center; gap: 16px; padding: 12px 0 20px 0; background: transparent; }
+        .back-btn { background: rgba(20,20,30,0.6); backdrop-filter: blur(8px); border: none; color: var(--text); font-size: 20px; cursor: pointer; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(124,77,255,0.3); }
+        .back-btn:active { transform: scale(0.95); background: rgba(124,77,255,0.2); }
         .logo img { height: 48px; width: auto; }
-        .product-card { background: var(--surface); border-radius: 24px; padding: 16px; display: flex; gap: 16px; margin-bottom: 24px; }
-        .product-img { width: 80px; height: 80px; border-radius: 20px; overflow: hidden; }
+        
+        .product-card { background: var(--surface); border-radius: 24px; padding: 16px; display: flex; gap: 16px; margin-bottom: 24px; border: 1px solid var(--border); }
+        .product-img { width: 80px; height: 80px; border-radius: 20px; overflow: hidden; background: var(--bg); }
         .product-img img { width: 100%; height: 100%; object-fit: cover; }
         .product-details { flex: 1; }
         .product-name { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
         .product-price { font-size: 22px; font-weight: 800; color: var(--accent); }
-        .section { background: var(--surface); border-radius: 24px; padding: 20px; margin-bottom: 20px; }
+        .old-price { font-size: 14px; color: #8e8e9e; text-decoration: line-through; margin-left: 8px; }
+        
+        .section { background: var(--surface); border-radius: 24px; padding: 20px; margin-bottom: 20px; border: 1px solid var(--border); }
         .section-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
-        .payment-option { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 16px; cursor: pointer; border: 1px solid var(--border); margin-bottom: 12px; }
+        
+        .payment-option { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 16px; cursor: pointer; border: 1px solid var(--border); margin-bottom: 12px; transition: 0.2s; }
         .payment-option.selected { border-color: var(--accent); background: rgba(124,77,255,0.1); }
         .payment-option:active { transform: scale(0.98); }
         .payment-radio { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--text-secondary); display: flex; align-items: center; justify-content: center; }
         .payment-option.selected .payment-radio { border-color: var(--accent); }
         .payment-radio-inner { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); display: none; }
         .payment-option.selected .payment-radio-inner { display: block; }
+        
         .balance-input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 12px; color: var(--text); font-size: 16px; margin-top: 12px; }
+        .balance-input:focus { outline: none; border-color: var(--accent); }
+        
         .checkbox { display: flex; align-items: center; gap: 12px; cursor: pointer; margin-bottom: 20px; }
-        .checkbox-box { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--text-secondary); display: flex; align-items: center; justify-content: center; }
+        .checkbox-box { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--text-secondary); display: flex; align-items: center; justify-content: center; transition: 0.2s; }
         .checkbox-box.checked { border-color: var(--accent); background: var(--accent); }
         .checkbox-box.checked i { color: white; font-size: 12px; }
+        
         .final-price { text-align: center; padding: 20px; background: linear-gradient(135deg, #1a1a2e, #0f0f1a); border-radius: 24px; margin-bottom: 20px; }
         .final-label { font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; }
-        .final-amount { font-size: 34px; font-weight: 800; color: var(--accent); }
-        .purchase-btn { width: 100%; background: var(--accent); border: none; padding: 16px; border-radius: 60px; font-size: 18px; font-weight: 700; color: white; cursor: pointer; }
+        .final-amount { font-size: 36px; font-weight: 800; color: var(--accent); }
+        
+        .purchase-btn { width: 100%; background: var(--accent); border: none; padding: 18px; border-radius: 60px; font-size: 18px; font-weight: 700; color: white; cursor: pointer; transition: 0.2s; }
         .purchase-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .purchase-btn:active:not(:disabled) { transform: scale(0.97); }
+        
+        .bottom-nav { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 500px; background: rgba(12,12,18,0.65); backdrop-filter: blur(28px); border-radius: 60px; display: flex; justify-content: space-around; padding: 6px 12px; border: 1px solid rgba(255,255,255,0.12); z-index: 100; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #8e8e9e; font-size: 11px; font-weight: 500; gap: 4px; padding: 8px 16px; border-radius: 50px; }
+        .nav-item.active { color: #7c4dff; background: rgba(124,77,255,0.18); }
+        .nav-icon { font-size: 22px; }
     </style>
 </head>
 <body>
@@ -62,12 +78,12 @@
             <div class="payment-radio"><div class="payment-radio-inner"></div></div>
             <div>Оплата продавцу</div>
         </div>
-        <input type="number" class="balance-input" id="balanceAmount" placeholder="Сумма списания с баланса" style="display:none;">
+        <input type="number" class="balance-input" id="balanceAmount" placeholder="Сумма списания с баланса" style="display:none;" value="0">
     </div>
 
     <div class="checkbox" id="agreeCheckbox">
         <div class="checkbox-box"><i class="fas fa-check"></i></div>
-        <div>Я согласен с <a href="#" onclick="window.open('https://telegra.ph/Pered-tem-kak-nachat-ispolzovat-nashi-uslugi-oznakomsya-s-nashimi-pravilami-06-01', '_blank')">пользовательским соглашением</a></div>
+        <div>Я согласен с <a href="#" onclick="window.open('https://telegra.ph/Pered-tem-kak-nachat-ispolzovat-nashi-uslugi-oznakomsya-s-nashimi-pravilami-06-01', '_blank')" style="color: var(--accent);">пользовательским соглашением</a></div>
     </div>
 
     <div class="final-price">
@@ -78,10 +94,17 @@
     <button class="purchase-btn" id="purchaseBtn" disabled>Оформить покупку</button>
 </div>
 
+<div class="bottom-nav">
+    <a href="index.html" class="nav-item"><div class="nav-icon"><i class="fas fa-home"></i></div><span>Главная</span></a>
+    <a href="games.html" class="nav-item"><div class="nav-icon"><i class="fas fa-gamepad"></i></div><span>Игры</span></a>
+    <a href="account.html" class="nav-item"><div class="nav-icon"><i class="fas fa-user"></i></div><span>Профиль</span></a>
+</div>
+
 <script>
     const tg = window.Telegram.WebApp;
     tg.expand();
     tg.enableClosingConfirmation();
+    tg.setHeaderColor('#0c0c0e');
     
     const urlParams = new URLSearchParams(window.location.search);
     const dataParam = urlParams.get('data');
@@ -92,19 +115,32 @@
     let balanceAmount = 0;
     let agreed = false;
     
+    const productPrice = purchaseData.price;
+    const originalPrice = purchaseData.originalPrice || purchaseData.price;
+    const hasDiscount = purchaseData.discount > 0;
+    
     document.getElementById('userBalance').textContent = userBalance;
+    
+    let priceHtml = `<span class="product-price">${productPrice} ₽</span>`;
+    if (hasDiscount && originalPrice !== productPrice) {
+        priceHtml = `<span class="product-price">${productPrice} ₽</span><span class="old-price">${originalPrice} ₽</span>`;
+    }
+    
+    function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])); }
+    
     document.getElementById('productCard').innerHTML = `
         <div class="product-img"><img src="https://placehold.co/80x80/1c1c20/7c4dff?text=${purchaseData.name.charAt(0)}" alt=""></div>
         <div class="product-details">
-            <div class="product-name">${purchaseData.name}</div>
-            <div class="product-price">${purchaseData.price} ₽</div>
+            <div class="product-name">${escapeHtml(purchaseData.name)}</div>
+            <div>${priceHtml}</div>
+            ${purchaseData.variant ? `<div style="font-size: 12px; color: #8e8e9e; margin-top: 4px;">Вариант: ${escapeHtml(purchaseData.variant)}</div>` : ''}
         </div>
     `;
     
     function updateFinalPrice() {
-        let final = purchaseData.price;
+        let final = productPrice;
         if (selectedMethod === 'balance') {
-            final = Math.max(0, purchaseData.price - balanceAmount);
+            final = Math.max(0, productPrice - balanceAmount);
         }
         document.getElementById('finalAmount').textContent = `${final} ₽`;
     }
@@ -116,36 +152,44 @@
         document.getElementById('balanceAmount').style.display = 'block';
         updateFinalPrice();
     };
+    
     document.getElementById('optionSeller').onclick = () => {
         selectedMethod = 'seller';
         document.getElementById('optionSeller').classList.add('selected');
         document.getElementById('optionBalance').classList.remove('selected');
         document.getElementById('balanceAmount').style.display = 'none';
         balanceAmount = 0;
+        document.getElementById('balanceAmount').value = 0;
         updateFinalPrice();
     };
-    document.getElementById('balanceAmount').oninput = (e) => {
+    
+    document.getElementById('balanceAmount').addEventListener('input', (e) => {
         let val = parseInt(e.target.value) || 0;
         if (val > userBalance) val = userBalance;
-        if (val > purchaseData.price) val = purchaseData.price;
+        if (val > productPrice) val = productPrice;
         balanceAmount = val;
         e.target.value = balanceAmount;
         updateFinalPrice();
-    };
+    });
+    
     document.getElementById('agreeCheckbox').onclick = () => {
         const box = document.querySelector('.checkbox-box');
         box.classList.toggle('checked');
         agreed = box.classList.contains('checked');
         document.getElementById('purchaseBtn').disabled = !agreed;
     };
+    
     document.getElementById('purchaseBtn').onclick = () => {
         if (selectedMethod === 'balance' && balanceAmount > 0) {
             const newBalance = userBalance - balanceAmount;
             localStorage.setItem('userBalance', newBalance);
         }
-        const message = `Покупка: ${purchaseData.name}\nЦена: ${purchaseData.price} ₽\nСпособ: ${selectedMethod === 'balance' ? 'Баланс' : 'Продавцу'}\nПользователь: ${tg.initDataUnsafe.user?.username || 'Anonymous'}`;
+        const user = tg.initDataUnsafe.user;
+        const username = user?.username || user?.first_name || 'Anonymous';
+        const message = `🛒 Новая покупка!\n\nТовар: ${purchaseData.name}\n${purchaseData.variant ? `Вариант: ${purchaseData.variant}\n` : ''}Цена: ${productPrice} ₽\nСпособ: ${selectedMethod === 'balance' ? 'Баланс' : 'Продавцу'}\n${selectedMethod === 'balance' ? `Списано с баланса: ${balanceAmount} ₽\nИтого к оплате: ${productPrice - balanceAmount} ₽\n` : ''}Пользователь: @${username}`;
         window.location.href = `https://t.me/Bahrik228?text=${encodeURIComponent(message)}`;
     };
+    
     updateFinalPrice();
 </script>
 </body>
