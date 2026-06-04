@@ -7,9 +7,9 @@
       "banner1": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100000Banner1.png",
       "banner2": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100000Banner2.png",
       "variants": [],
-      "price": 875,
+      "price": 919,
       "discount": 0,
-      "game": null
+      "game": "BrawlStars"
     },
     {
       "id": 100001,
@@ -20,12 +20,12 @@
       "variants": [
         {
           "name": "По входу",
-          "price": 1200
+          "price": 1249
         }
       ],
       "price": 0,
       "discount": 5,
-      "game": null
+      "game": "BrawlStars"
     },
     {
       "id": 100002,
@@ -51,28 +51,28 @@
         },
         {
           "name": "80 кристаллов",
-          "price": 406
+          "price": 456
         },
         {
           "name": "170 кристаллов",
-          "price": 871
+          "price": 901
         },
         {
           "name": "360 кристаллов",
-          "price": 1690
+          "price": 1890
         },
         {
           "name": "950 кристаллов",
-          "price": 4206
+          "price": ---
         },
         {
           "name": "2000 кристаллов",
-          "price": 7743
+          "price": 9219
         }
       ],
       "price": 0,
-      "discount": 2,
-      "game": null
+      "discount": 0,
+      "game": "BrawlStars"
     },
     {
       "id": 100004,
@@ -100,7 +100,7 @@
       ],
       "price": 0,
       "discount": 0,
-      "game": null
+      "game": ""
     },
     {
       "id": 100005,
