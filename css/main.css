@@ -1,0 +1,325 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+    --bg: #0c0c0e;
+    --surface: #141416;
+    --surface-elevated: #1c1c20;
+    --accent: #7c4dff;
+    --accent-dim: #4a2c9e;
+    --text: #ffffff;
+    --text-secondary: #a0a0b0;
+    --border: rgba(255, 255, 255, 0.06);
+    --radius-card: 24px;
+    --radius-element: 16px;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, 'Inter', system-ui, 'Segoe UI', Helvetica, sans-serif;
+    padding: 0 16px 90px 16px;
+    font-weight: 450;
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    max-width: 540px;
+    margin: 0 auto;
+}
+
+/* HEADER */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0 20px 0;
+    background: transparent;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo img {
+    height: 58px;
+    width: auto;
+    display: block;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+}
+
+.user-avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: rgba(20,20,30,0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(124, 77, 255, 0.4);
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.user-avatar:active {
+    transform: scale(0.96);
+}
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Тизер Моко */
+.moko-teaser {
+    background: rgba(20, 20, 28, 0.7);
+    backdrop-filter: blur(12px);
+    border-radius: 32px;
+    margin: 4px 0 28px 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 18px 12px 12px;
+    border: 1px solid rgba(124, 77, 255, 0.25);
+    cursor: pointer;
+    transition: 0.1s ease;
+}
+.moko-teaser:active {
+    transform: scale(0.97);
+}
+.moko-teaser-img {
+    width: 68px;
+    height: 68px;
+    overflow: hidden;
+    border-radius: 24px;
+}
+.moko-teaser-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.moko-teaser-text {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 510;
+    color: #dddcee;
+}
+.moko-teaser-text span {
+    color: var(--accent);
+    font-weight: 600;
+}
+.moko-teaser i {
+    font-size: 18px;
+    color: var(--accent);
+    margin-left: auto;
+}
+
+/* секции */
+.section {
+    margin-bottom: 32px;
+}
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0 4px;
+    margin-bottom: 16px;
+}
+.section-title {
+    font-size: 20px;
+    font-weight: 650;
+    letter-spacing: -0.2px;
+    color: var(--text);
+}
+.section-link {
+    font-size: 14px;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.section-link:active {
+    transform: scale(0.96);
+}
+
+/* горизонтальные скроллы без полос */
+.games-scroll, .products-scroll {
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 12px;
+}
+.games-scroll::-webkit-scrollbar,
+.products-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.game-card {
+    flex: 0 0 auto;
+    width: 86px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+.game-card:active {
+    transform: scale(0.95);
+}
+.game-icon {
+    width: 86px;
+    height: 86px;
+    background: var(--surface);
+    border-radius: 28px;
+    overflow: hidden;
+    margin-bottom: 8px;
+    border: 1px solid var(--border);
+    transition: 0.2s;
+}
+.game-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.game-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+/* карточка товара */
+.product-card {
+    flex: 0 0 auto;
+    width: 164px;
+    background: var(--surface);
+    border-radius: 26px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    transition: 0.2s;
+}
+.product-card:active {
+    transform: scale(0.97);
+}
+.product-banner {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: #0a0a0c;
+    overflow: hidden;
+}
+.product-banner img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+.product-banner img.active {
+    opacity: 1;
+}
+.product-info {
+    padding: 12px 12px 14px;
+}
+.product-name {
+    font-weight: 600;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 6px;
+}
+.price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.product-price {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--accent);
+}
+.old-price {
+    font-size: 13px;
+    color: #8e8e9e;
+    text-decoration: line-through;
+}
+.discount-badge {
+    background: rgba(124, 77, 255, 0.2);
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    display: inline-block;
+    margin-top: 4px;
+}
+
+.reviews-card {
+    background: rgba(22, 22, 28, 0.65);
+    backdrop-filter: blur(12px);
+    border-radius: 28px;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.05);
+    margin-top: 8px;
+}
+.reviews-card i {
+    font-size: 32px;
+    color: var(--accent);
+    opacity: 0.8;
+    margin-bottom: 8px;
+    display: inline-block;
+}
+.reviews-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 14px;
+}
+.reviews-btn {
+    background: rgba(124, 77, 255, 0.2);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 40px;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.1s;
+    cursor: pointer;
+}
+.reviews-btn:active {
+    transform: scale(0.96);
+}
+
+/* скелетоны */
+.skeleton {
+    background: linear-gradient(110deg, #1a1a22 30%, #2a2a32 50%, #1a1a22 70%);
+    background-size: 200% 100%;
+    animation: shimmer 1.2s infinite;
+}
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 0.35s ease forwards;
+}
