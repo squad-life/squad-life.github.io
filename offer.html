@@ -11,44 +11,68 @@
         :root { --bg: #0c0c0e; --surface: #141416; --surface-elevated: #1c1c20; --accent: #7c4dff; --text: #fff; --text-secondary: #a0a0b0; --border: rgba(255,255,255,0.06); }
         body { background: var(--bg); color: var(--text); font-family: -apple-system, Inter, system-ui, sans-serif; padding: 0 16px 90px 16px; line-height: 1.4; }
         .container { max-width: 540px; margin: 0 auto; }
-        header { display: flex; justify-content: space-between; align-items: center; padding: 12px 0 20px 0; position: sticky; top: 0; background: var(--bg); z-index: 10; }
+        
+        /* Прозрачный хедер */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 12px 0 20px 0; position: sticky; top: 0; background: transparent; z-index: 10; }
         .logo img { height: 48px; width: auto; }
         .user-avatar { width: 42px; height: 42px; border-radius: 50%; background: rgba(20,20,30,0.6); backdrop-filter: blur(8px); border: 1px solid rgba(124,77,255,0.4); overflow: hidden; cursor: pointer; }
         .user-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .back-btn { background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
-        .back-btn:active { background: rgba(255,255,255,0.1); transform: scale(0.95); }
-        .offer-banner { width: 100%; border-radius: 28px; margin-bottom: 20px; overflow: hidden; aspect-ratio: 1/1; background: var(--surface); position: relative; }
-        .offer-banner img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s; }
-        .offer-banner img.active { opacity: 1; }
-        .offer-title { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
-        .offer-description { color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5; }
+        .back-btn { background: rgba(20,20,30,0.6); backdrop-filter: blur(8px); border: none; color: var(--text); font-size: 20px; cursor: pointer; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 1px solid rgba(124,77,255,0.3); }
+        .back-btn:active { transform: scale(0.95); background: rgba(124,77,255,0.2); }
+        
+        /* Баннер с каруселью */
+        .banner-container { position: relative; width: 100%; border-radius: 28px; overflow: hidden; margin-bottom: 20px; aspect-ratio: 1/1; background: var(--surface); }
+        .banner-slides { position: relative; width: 100%; height: 100%; }
+        .banner-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.3s ease; }
+        .banner-slide.active { opacity: 1; }
+        .banner-slide img { width: 100%; height: 100%; object-fit: cover; }
+        .banner-dots { position: absolute; bottom: 16px; left: 0; right: 0; display: flex; justify-content: center; gap: 8px; z-index: 5; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.5); transition: 0.2s; cursor: pointer; }
+        .dot.active { background: var(--accent); width: 20px; border-radius: 4px; }
+        
+        /* Контент */
+        .offer-title { font-size: 26px; font-weight: 700; margin-bottom: 12px; }
+        .offer-description { color: var(--text-secondary); margin-bottom: 24px; line-height: 1.5; }
         .price-section { margin-bottom: 24px; }
-        .price-main { font-size: 34px; font-weight: 800; color: var(--accent); }
+        .price-main { font-size: 36px; font-weight: 800; color: var(--accent); }
         .price-old { font-size: 20px; color: #8e8e9e; text-decoration: line-through; margin-left: 12px; }
         .discount-badge { background: rgba(124,77,255,0.2); padding: 4px 12px; border-radius: 20px; font-size: 14px; font-weight: 600; color: var(--accent); display: inline-block; margin-left: 12px; }
+        
+        /* Стили вариантов — аккуратные кнопки */
         .variants-section { margin-bottom: 24px; }
         .variants-title { font-size: 16px; font-weight: 600; margin-bottom: 12px; }
-        .variants-grid { display: flex; gap: 12px; flex-wrap: wrap; }
-        .variant-btn { background: var(--surface); border: 1px solid var(--border); padding: 12px 20px; border-radius: 40px; font-size: 15px; font-weight: 500; cursor: pointer; transition: 0.2s; }
-        .variant-btn.selected { background: var(--accent); border-color: var(--accent); color: white; }
+        .variants-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+        .variant-btn { background: var(--surface); border: 1px solid var(--border); padding: 12px 20px; border-radius: 40px; font-size: 15px; font-weight: 500; color: var(--text); cursor: pointer; transition: all 0.2s; }
+        .variant-btn.selected { background: var(--accent); border-color: var(--accent); color: white; box-shadow: 0 4px 12px rgba(124,77,255,0.3); }
         .variant-btn:active { transform: scale(0.95); }
-        .buy-btn { width: 100%; background: var(--accent); border: none; padding: 16px; border-radius: 60px; font-size: 18px; font-weight: 700; color: white; cursor: pointer; transition: 0.2s; margin-bottom: 16px; }
+        
+        /* Кнопка покупки */
+        .buy-btn { width: 100%; background: var(--accent); border: none; padding: 18px; border-radius: 60px; font-size: 18px; font-weight: 700; color: white; cursor: pointer; transition: 0.2s; margin-bottom: 16px; }
         .buy-btn:active { transform: scale(0.97); }
+        
+        /* Нижняя навигация */
         .bottom-nav { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); width: calc(100% - 32px); max-width: 500px; background: rgba(12,12,18,0.65); backdrop-filter: blur(28px); border-radius: 60px; display: flex; justify-content: space-around; padding: 6px 12px; border: 1px solid rgba(255,255,255,0.12); z-index: 100; }
         .nav-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #8e8e9e; font-size: 11px; font-weight: 500; gap: 4px; padding: 8px 16px; border-radius: 50px; }
         .nav-item.active { color: #7c4dff; background: rgba(124,77,255,0.18); }
         .nav-icon { font-size: 22px; }
+        
+        .skeleton { background: linear-gradient(110deg,#1a1a22 30%,#2a2a32 50%,#1a1a22 70%); background-size: 200% 100%; animation: shimmer 1.2s infinite; border-radius: 20px; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
     </style>
 </head>
 <body>
 <div class="container">
     <header>
         <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-left"></i></button>
-        <div class="logo"><img src="https://raw.githubusercontent.com/squad-life/squad-life.github.io/main/assets/logo.png" alt="Life Shop"></div>
+        <div class="logo"><img src="https://raw.githubusercontent.com/squad-life/squad-life.github.io/main/assets/logo.png" alt="Life Shop" onerror="this.src='https://placehold.co/200x60/141416/7c4dff?text=Life+Shop'"></div>
         <div class="user-avatar" id="user-avatar"><img id="avatar-img" src="" alt="avatar"></div>
     </header>
 
-    <div class="offer-banner" id="offerBanner"></div>
+    <div class="banner-container" id="bannerContainer">
+        <div class="banner-slides" id="bannerSlides"></div>
+        <div class="banner-dots" id="bannerDots"></div>
+    </div>
+
     <h1 class="offer-title" id="offerTitle">Загрузка...</h1>
     <p class="offer-description" id="offerDesc"></p>
     
@@ -84,26 +108,24 @@
     const DATA_BASE = 'https://raw.githubusercontent.com/squad-life/squad-life.github.io/main/data/';
     let product = null;
     let selectedVariant = 0;
+    let currentSlide = 0;
+    let slideInterval = null;
     
     async function loadOffer() {
         try {
             const res = await fetch(DATA_BASE + 'all_offers.json');
             const data = await res.json();
-            product = data.offers.find(o => o.id === productId);
+            const offers = data.offers || data;
+            product = offers.find(o => o.id === productId);
             if (!product) throw new Error('Товар не найден');
             
             document.getElementById('offerTitle').textContent = product.name;
             document.getElementById('offerDesc').textContent = product.description || 'Описание отсутствует';
             
-            // баннеры
-            const bannerDiv = document.getElementById('offerBanner');
-            bannerDiv.innerHTML = `
-                <img src="${product.banner1}" class="active" alt="">
-                <img src="${product.banner2}" alt="">
-            `;
-            startBannerRotation();
+            const banners = [product.banner1, product.banner2].filter(b => b);
+            if (banners.length === 0) banners.push('https://placehold.co/400x400/141416/7c4dff?text=No+Image');
+            renderBanners(banners);
             
-            // варианты или обычная цена
             if (product.variants && product.variants.length > 0) {
                 document.getElementById('variantsSection').style.display = 'block';
                 renderVariants();
@@ -114,7 +136,66 @@
         } catch(e) {
             console.error(e);
             document.getElementById('offerTitle').textContent = 'Товар не найден';
+            document.getElementById('offerDesc').textContent = 'Проверьте ID товара';
         }
+    }
+    
+    function renderBanners(banners) {
+        const slidesContainer = document.getElementById('bannerSlides');
+        const dotsContainer = document.getElementById('bannerDots');
+        slidesContainer.innerHTML = '';
+        dotsContainer.innerHTML = '';
+        
+        banners.forEach((src, idx) => {
+            const slide = document.createElement('div');
+            slide.className = 'banner-slide' + (idx === 0 ? ' active' : '');
+            slide.innerHTML = `<img src="${src}" alt="Баннер ${idx+1}" onerror="this.src='https://placehold.co/400x400/141416/7c4dff?text=Error'">`;
+            slidesContainer.appendChild(slide);
+            
+            const dot = document.createElement('div');
+            dot.className = 'dot' + (idx === 0 ? ' active' : '');
+            dot.onclick = () => goToSlide(idx);
+            dotsContainer.appendChild(dot);
+        });
+        
+        if (banners.length > 1) startAutoSlide(banners.length);
+        initSwipe(banners.length);
+    }
+    
+    function goToSlide(index) {
+        const slides = document.querySelectorAll('.banner-slide');
+        const dots = document.querySelectorAll('.dot');
+        if (!slides.length) return;
+        slides[currentSlide].classList.remove('active');
+        dots[currentSlide].classList.remove('active');
+        currentSlide = index;
+        slides[currentSlide].classList.add('active');
+        dots[currentSlide].classList.add('active');
+    }
+    
+    function startAutoSlide(count) {
+        if (slideInterval) clearInterval(slideInterval);
+        slideInterval = setInterval(() => {
+            goToSlide((currentSlide + 1) % count);
+        }, 5000);
+    }
+    
+    function initSwipe(slideCount) {
+        const container = document.getElementById('bannerContainer');
+        let touchStartX = 0;
+        container.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            if (slideInterval) clearInterval(slideInterval);
+        });
+        container.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].screenX;
+            const diff = touchEndX - touchStartX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) goToSlide((currentSlide - 1 + slideCount) % slideCount);
+                else goToSlide((currentSlide + 1) % slideCount);
+            }
+            startAutoSlide(slideCount);
+        });
     }
     
     function renderVariants() {
@@ -139,13 +220,11 @@
         let price = variant.price;
         let oldPrice = null;
         let discountHtml = '';
-        
         if (product.discount && product.discount > 0) {
             oldPrice = price;
             price = Math.round(price * (1 - product.discount / 100));
             discountHtml = `<span class="discount-badge">-${product.discount}%</span>`;
         }
-        
         document.getElementById('priceSection').innerHTML = `
             <span class="price-main">${price} ₽</span>
             ${oldPrice ? `<span class="price-old">${oldPrice} ₽</span>` : ''}
@@ -157,13 +236,11 @@
         let price = product.price;
         let oldPrice = null;
         let discountHtml = '';
-        
         if (product.discount && product.discount > 0) {
             oldPrice = price;
             price = Math.round(price * (1 - product.discount / 100));
             discountHtml = `<span class="discount-badge">-${product.discount}%</span>`;
         }
-        
         document.getElementById('priceSection').innerHTML = `
             <span class="price-main">${price} ₽</span>
             ${oldPrice ? `<span class="price-old">${oldPrice} ₽</span>` : ''}
@@ -171,26 +248,22 @@
         `;
     }
     
-    function startBannerRotation() {
-        const bannerDiv = document.getElementById('offerBanner');
-        const imgs = bannerDiv.querySelectorAll('img');
-        if (imgs.length < 2) return;
-        let current = 0;
-        setInterval(() => {
-            imgs[current].classList.remove('active');
-            current = (current + 1) % imgs.length;
-            imgs[current].classList.add('active');
-        }, 5000);
-    }
-    
     document.getElementById('buyBtn').onclick = () => {
-        const variantPrice = product.variants?.length ? product.variants[selectedVariant].price : product.price;
-        const finalPrice = product.discount ? Math.round(variantPrice * (1 - product.discount/100)) : variantPrice;
+        let basePrice, variantName = null;
+        if (product.variants && product.variants.length > 0) {
+            basePrice = product.variants[selectedVariant].price;
+            variantName = product.variants[selectedVariant].name;
+        } else {
+            basePrice = product.price;
+        }
+        const finalPrice = product.discount ? Math.round(basePrice * (1 - product.discount/100)) : basePrice;
         const purchaseData = {
             id: product.id,
             name: product.name,
             price: finalPrice,
-            variant: product.variants?.length ? selectedVariant : null
+            originalPrice: basePrice,
+            variant: variantName,
+            discount: product.discount || 0
         };
         window.location.href = `purchase.html?data=${encodeURIComponent(JSON.stringify(purchaseData))}`;
     };
