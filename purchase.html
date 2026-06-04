@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <title>Оформление — Life Shop</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+        :root { --bg: #0c0c0e; --surface: #141416; --surface-elevated: #1c1c20; --accent: #7c4dff; --text: #fff; --text-secondary: #a0a0b0; --border: rgba(255,255,255,0.06); }
+        body { background: var(--bg); color: var(--text); font-family: -apple-system, Inter, system-ui, sans-serif; padding: 0 16px 90px 16px; line-height: 1.4; }
+        .container { max-width: 540px; margin: 0 auto; }
+        header { display: flex; align-items: center; gap: 16px; padding: 12px 0 20px 0; }
+        .back-btn { background: none; border: none; color: var(--text); font-size: 24px; cursor: pointer; width: 42px; height: 42px; border-radius: 50%; }
+        .back-btn:active { background: rgba(255,255,255,0.1); transform: scale(0.95); }
+        .logo img { height: 48px; width: auto; }
+        .product-card { background: var(--surface); border-radius: 24px; padding: 16px; display: flex; gap: 16px; margin-bottom: 24px; }
+        .product-img { width: 80px; height: 80px; border-radius: 20px; overflow: hidden; }
+        .product-img img { width: 100%; height: 100%; object-fit: cover; }
+        .product-details { flex: 1; }
+        .product-name { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+        .product-price { font-size: 22px; font-weight: 800; color: var(--accent); }
+        .section { background: var(--surface); border-radius: 24px; padding: 20px; margin-bottom: 20px; }
+        .section-title { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+        .payment-option { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 16px; cursor: pointer; border: 1px solid var(--border); margin-bottom: 12px; }
+        .payment-option.selected { border-color: var(--accent); background: rgba(124,77,255,0.1); }
+        .payment-option:active { transform: scale(0.98); }
+        .payment-radio { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--text-secondary); display: flex; align-items: center; justify-content: center; }
+        .payment-option.selected .payment-radio { border-color: var(--accent); }
+        .payment-radio-inner { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); display: none; }
+        .payment-option.selected .payment-radio-inner { display: block; }
+        .balance-input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 12px; color: var(--text); font-size: 16px; margin-top: 12px; }
+        .checkbox { display: flex; align-items: center; gap: 12px; cursor: pointer; margin-bottom: 20px; }
+        .checkbox-box { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--text-secondary); display: flex; align-items: center; justify-content: center; }
+        .checkbox-box.checked { border-color: var(--accent); background: var(--accent); }
+        .checkbox-box.checked i { color: white; font-size: 12px; }
+        .final-price { text-align: center; padding: 20px; background: linear-gradient(135deg, #1a1a2e, #0f0f1a); border-radius: 24px; margin-bottom: 20px; }
+        .final-label { font-size: 14px; color: var(--text-secondary); margin-bottom: 8px; }
+        .final-amount { font-size: 34px; font-weight: 800; color: var(--accent); }
+        .purchase-btn { width: 100%; background: var(--accent); border: none; padding: 16px; border-radius: 60px; font-size: 18px; font-weight: 700; color: white; cursor: pointer; }
+        .purchase-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .purchase-btn:active:not(:disabled) { transform: scale(0.97); }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-left"></i></button>
+        <div class="logo"><img src="https://raw.githubusercontent.com/squad-life/squad-life.github.io/main/assets/logo.png" alt="Life Shop"></div>
+    </header>
+
+    <div class="product-card" id="productCard"></div>
+
+    <div class="section">
+        <div class="section-title">Способ оплаты</div>
+        <div class="payment-option" id="optionBalance">
+            <div class="payment-radio"><div class="payment-radio-inner"></div></div>
+            <div>Оплата с баланса (доступно: <span id="userBalance">0</span> ₽)</div>
+        </div>
+        <div class="payment-option selected" id="optionSeller">
+            <div class="payment-radio"><div class="payment-radio-inner"></div></div>
+            <div>Оплата продавцу</div>
+        </div>
+        <input type="number" class="balance-input" id="balanceAmount" placeholder="Сумма списания с баланса" style="display:none;">
+    </div>
+
+    <div class="checkbox" id="agreeCheckbox">
+        <div class="checkbox-box"><i class="fas fa-check"></i></div>
+        <div>Я согласен с <a href="#" onclick="window.open('https://telegra.ph/Pered-tem-kak-nachat-ispolzovat-nashi-uslugi-oznakomsya-s-nashimi-pravilami-06-01', '_blank')">пользовательским соглашением</a></div>
+    </div>
+
+    <div class="final-price">
+        <div class="final-label">К оплате</div>
+        <div class="final-amount" id="finalAmount">0 ₽</div>
+    </div>
+
+    <button class="purchase-btn" id="purchaseBtn" disabled>Оформить покупку</button>
+</div>
+
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+    tg.enableClosingConfirmation();
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const dataParam = urlParams.get('data');
+    const purchaseData = JSON.parse(decodeURIComponent(dataParam));
+    
+    let userBalance = parseInt(localStorage.getItem('userBalance') || '0');
+    let selectedMethod = 'seller';
+    let balanceAmount = 0;
+    let agreed = false;
+    
+    document.getElementById('userBalance').textContent = userBalance;
+    document.getElementById('productCard').innerHTML = `
+        <div class="product-img"><img src="https://placehold.co/80x80/1c1c20/7c4dff?text=${purchaseData.name.charAt(0)}" alt=""></div>
+        <div class="product-details">
+            <div class="product-name">${purchaseData.name}</div>
+            <div class="product-price">${purchaseData.price} ₽</div>
+        </div>
+    `;
+    
+    function updateFinalPrice() {
+        let final = purchaseData.price;
+        if (selectedMethod === 'balance') {
+            final = Math.max(0, purchaseData.price - balanceAmount);
+        }
+        document.getElementById('finalAmount').textContent = `${final} ₽`;
+    }
+    
+    document.getElementById('optionBalance').onclick = () => {
+        selectedMethod = 'balance';
+        document.getElementById('optionBalance').classList.add('selected');
+        document.getElementById('optionSeller').classList.remove('selected');
+        document.getElementById('balanceAmount').style.display = 'block';
+        updateFinalPrice();
+    };
+    document.getElementById('optionSeller').onclick = () => {
+        selectedMethod = 'seller';
+        document.getElementById('optionSeller').classList.add('selected');
+        document.getElementById('optionBalance').classList.remove('selected');
+        document.getElementById('balanceAmount').style.display = 'none';
+        balanceAmount = 0;
+        updateFinalPrice();
+    };
+    document.getElementById('balanceAmount').oninput = (e) => {
+        let val = parseInt(e.target.value) || 0;
+        if (val > userBalance) val = userBalance;
+        if (val > purchaseData.price) val = purchaseData.price;
+        balanceAmount = val;
+        e.target.value = balanceAmount;
+        updateFinalPrice();
+    };
+    document.getElementById('agreeCheckbox').onclick = () => {
+        const box = document.querySelector('.checkbox-box');
+        box.classList.toggle('checked');
+        agreed = box.classList.contains('checked');
+        document.getElementById('purchaseBtn').disabled = !agreed;
+    };
+    document.getElementById('purchaseBtn').onclick = () => {
+        if (selectedMethod === 'balance' && balanceAmount > 0) {
+            const newBalance = userBalance - balanceAmount;
+            localStorage.setItem('userBalance', newBalance);
+        }
+        const message = `Покупка: ${purchaseData.name}\nЦена: ${purchaseData.price} ₽\nСпособ: ${selectedMethod === 'balance' ? 'Баланс' : 'Продавцу'}\nПользователь: ${tg.initDataUnsafe.user?.username || 'Anonymous'}`;
+        window.location.href = `https://t.me/Bahrik228?text=${encodeURIComponent(message)}`;
+    };
+    updateFinalPrice();
+</script>
+</body>
+</html>
