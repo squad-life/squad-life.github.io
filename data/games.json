@@ -1,0 +1,26 @@
+[
+  {
+    "name": "BrawlStars",
+    "logo": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/BrawlStarsLogo.png",
+    "banner": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/BrawlStarsBanner.png",
+    "order": 1
+  },
+  {
+    "name": "ClashRoyale",
+    "logo": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/ClashRoyaleLogo.png",
+    "banner": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/ClashRoyaleBanner.png",
+    "order": 2
+  },
+  {
+    "name": "MoCo",
+    "logo": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/MoCoLogo.png",
+    "banner": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/MoCoBanner.png",
+    "order": 3
+  },
+  {
+    "name": "Roblox",
+    "logo": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/RobloxLogo.png",
+    "banner": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/RobloxBanner.png",
+    "order": 4
+  }
+]
