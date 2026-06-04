@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <script src="/components/head.js"></script>
+    <style>
+        /* Минимальные стили для контейнера, остальное в main.css */
+        .container { max-width: 540px; margin: 0 auto; }
+        #gamesContainer, #popularContainer, #discountContainer, #newContainer { min-height: 120px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="gamesSection" class="section">
+        <div class="section-header">
+            <h2 class="section-title">Игры</h2>
+            <a href="/games.html" class="section-link">Все <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="games-scroll" id="gamesContainer"></div>
+    </div>
+
+    <div class="section" id="discountSection" style="display: none;">
+        <div class="section-header">
+            <h2 class="section-title">Скидки</h2>
+        </div>
+        <div class="products-scroll" id="discountContainer"></div>
+    </div>
+
+    <div class="section">
+        <div class="section-header">
+            <h2 class="section-title">Популярное</h2>
+        </div>
+        <div class="products-scroll" id="popularContainer"></div>
+    </div>
+
+    <div class="section" id="newSection" style="display: none;">
+        <div class="section-header">
+            <h2 class="section-title">Новинки</h2>
+        </div>
+        <div class="products-scroll" id="newContainer"></div>
+    </div>
+
+    <div class="reviews-card">
+        <i class="fas fa-message"></i>
+        <p class="reviews-text">Честные отзывы игроков, Telegram-канал</p>
+        <button class="reviews-btn" id="reviewsBtn"><i class="fab fa-telegram"></i> Читать</button>
+    </div>
+</div>
+<div id="bottomNav"></div>
+
+<script src="/js/common.js"></script>
+<script src="/js/index.js"></script>
+</body>
+</html>
