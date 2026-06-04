@@ -1,336 +1,330 @@
-[
-  {
-    "id": 100000,
-    "name": "Brawl Pass",
-    "description": "Brawl Pass: при покупке Brawl Pass помимо наград бесплатного уровня вы будете получать дополнительные награды. Также вы получите больше ресурсов и доступ к определенному бойцу по достижении соответствующего уровня. Если вы уже разблокировали этого бойца, то получите альтернативную награду.",
-    "banner1": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100000Banner1.png",
-    "banner2": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100000Banner2.png",
-    "variants": [],
-    "price": "875",
-    "discount": 0,
-    "game": null
-  },
-  {
-    "id": 100001,
-    "name": "Brawl Pass Plus",
-    "description": "Brawl Pass Plus: при покупке этого пропуска вы получите все награды бесплатного уровня и награды Brawl Pass. Кроме того, вы получите больше ресурсов, цветовую вариацию скина, титул и мгновенное начисление 20 % опыта Brawl Pass.",
-    "banner1": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100001Banner1.png",
-    "banner2": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100001Banner2.png",
-    "variants": [
-      {
-        "name": "По входу",
-        "price": "1200"
-      }
-    ],
-    "price": 0,
-    "discount": "5",
-    "game": null
-  },
-  {
-    "id": 100002,
-    "name": "Алмазный пропуск",
-    "description": "Хотите больше наград? Приобретите алмазный пропуск и получайте дополнительные награды!",
-    "banner1": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100002Banner1.png",
-    "banner2": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100002Banner2.png",
-    "variants": [],
-    "price": "1072",
-    "discount": 0,
-    "game": null
-  },
-  {
-    "id": 100003,
-    "name": "Кристаллы",
-    "description": "Кристаллы — валюта, получаемая в Brawl Pass или в Магазине и используемая для покупки скинов, удвоителей боевого опыта, монет, ежедневных предложений и акций.",
-    "banner1": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100003Banner1.png",
-    "banner2": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100003Banner2.png",
-    "variants": [
-      {
-        "name": "30 кристаллов",
-        "price": "220"
-      },
-      {
-        "name": "80 кристаллов",
-        "price": "406"
-      },
-      {
-        "name": "170 кристаллов",
-        "price": "871"
-      },
-      {
-        "name": "360 кристаллов",
-        "price": "1690"
-      },
-      {
-        "name": "950 кристаллов",
-        "price": "4206"
-      },
-      {
-        "name": "2000 кристаллов",
-        "price": "7743"
-      }
-    ],
-    "price": 0,
-    "discount": "2",
-    "game": null
-  },
-  {
-    "id": 100004,
-    "name": "Робуксы",
-    "description": "Хочешь быть не таким, как все? Тебе нужны Робуксы! Именно они позволяют тебе выделяться из толпы, покупая крутейшие вещи для аватара и получая способности в играх.",
-    "banner1": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100004Banner1.png",
-    "banner2": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100004Banner2.png",
-    "variants": [
-      {
-        "name": "50 робуксов",
-        "price": "62"
-      },
-      {
-        "name": "100 робуксов",
-        "price": "114"
-      },
-      {
-        "name": "200 робуксов",
-        "price": "208"
-      },
-      {
-        "name": "500 робуксов",
-        "price": "490"
-      }
-    ],
-    "price": 0,
-    "discount": 0,
-    "game": null
-  },
-  {
-    "id": 100005,
-    "name": "Суперский пропуск",
-    "description": "Хотите больше наград? Приобретите суперский пропуск и получайте дополнительные награды вместе с наградами кристального пропуска!",
-    "banner1": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100005Banner1.png",
-    "banner2": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100005Banner2.png",
-    "variants": [
-      {
-        "name": "По входу",
-        "price": "930"
-      },
-      {
-        "name": "Начальный пропуск",
-        "price": "515"
-      }
-    ],
-    "price": 0,
-    "discount": 0,
-    "game": null
-  },
-  {
-    "id": 100006,
-    "name": "Монеты",
-    "description": "Необходимы для улучшения бойцов и покупок в магазине. Получить их можно в бою, в магазине, сезонном пропуске или пути отряда, а также за кристаллы.",
-    "banner1": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100006Banner1.png",
-    "banner2": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100006Banner2.png",
-    "variants": [
-      {
-        "name": "10000 монет",
-        "price": "97"
-      },
-      {
-        "name": "52500 монет",
-        "price": "259"
-      },
-      {
-        "name": "110000 монет",
-        "price": "824"
-      },
-      {
-        "name": "230000 монет",
-        "price": "1545"
-      },
-      {
-        "name": "600000 монет",
-        "price": "3752"
-      },
-      {
-        "name": "1250000 монет",
-        "price": "6974"
-      }
-    ],
-    "price": 0,
-    "discount": 0,
-    "game": null
-  },
-  {
-    "id": 100007,
-    "name": "Значки",
-    "description": "Гоблин, Идеальные пропорции или Дракончик на ваш аккаунт!",
-    "banner1": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100007Banner1.png",
-    "banner2": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100007Banner2.png",
-    "variants": [
-      {
-        "name": "Грусть Гоблина",
-        "price": "480"
-      },
-      {
-        "name": "Идеальные пропорции",
-        "price": "480"
-      },
-      {
-        "name": "Танцующий дракончик",
-        "price": "480"
-      }
-    ],
-    "price": 0,
-    "discount": 0,
-    "game": null
-  },
-  {
-    "id": 100008,
-    "name": "Разблокируй эволюции!",
-    "description": "Получи эволюции на свой аккаунт!",
-    "banner1": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100008Banner1.png",
-    "banner2": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100008Banner2.png",
-    "variants": [
-      {
-        "name": "Печь x3",
-        "price": "560"
-      },
-      {
-        "name": "Валькирия x3",
-        "price": "560"
-      },
-      {
-        "name": "Скелеты x3",
-        "price": "560"
-      },
-      {
-        "name": "Варвары x3",
-        "price": "560"
-      },
-      {
-        "name": "Маг x3",
-        "price": "560"
-      },
-      {
-        "name": "Подрывник x3",
-        "price": "560"
-      },
-      {
-        "name": "Электродракон x3",
-        "price": "560"
-      },
-      {
-        "name": "Лучницы x3",
-        "price": "560"
-      },
-      {
-        "name": "Ледяной дух x3",
-        "price": "560"
-      },
-      {
-        "name": "Мортира x3",
-        "price": "560"
-      },
-      {
-        "name": "Печь x3",
-        "price": "560"
-      },
-      {
-        "name": "Ведьма x3",
-        "price": "560"
-      },
-      {
-        "name": "Мегарыцарь x3",
-        "price": "560"
-      },
-      {
-        "name": "Пушка x3",
-        "price": "560"
-      },
-      {
-        "name": "П.Е.К.К.А. x3",
-        "price": "560"
-      },
-      {
-        "name": "Огненная лучница x3",
-        "price": "560"
-      },
-      {
-        "name": "Рыцарь x3",
-        "price": "560"
-      },
-      {
-        "name": "Гоблин-гигант x3",
-        "price": "560"
-      },
-      {
-        "name": "Стенобои x3",
-        "price": "560"
-      },
-      {
-        "name": "Гигантский снежок x3",
-        "price": "560"
-      },
-      {
-        "name": "Гоблинская бочка x3",
-        "price": "560"
-      },
-      {
-        "name": "Бочка со скелетами x3",
-        "price": "560"
-      },
-      {
-        "name": "Пламенный дракон x3",
-        "price": "560"
-      },
-      {
-        "name": "Палач x3",
-        "price": "560"
-      },
-      {
-        "name": "Охотник x3",
-        "price": "560"
-      },
-      {
-        "name": "Дровосек x3",
-        "price": "560"
-      },
-      {
-        "name": "Королевский гигант x3",
-        "price": "560"
-      },
-      {
-        "name": "Мушкетер x3",
-        "price": "560"
-      },
-      {
-        "name": "Королевские рекруты x3",
-        "price": "560"
-      },
-      {
-        "name": "Клетка с гоблином x3",
-        "price": "560"
-      },
-      {
-        "name": "Ледяной дух x3",
-        "price": "560"
-      },
-      {
-        "name": "Разряд x3",
-        "price": "560"
-      },
-      {
-        "name": "Летучие мыши x3",
-        "price": "560"
-      },
-      {
-        "name": "Боевой таран x3",
-        "price": "560"
-      },
-      {
-        "name": "Гоблинский бур x3",
-        "price": "560"
-      }
-    ],
-    "price": 0,
-    "discount": 0,
-    "game": null
-  }
-]
+{
+  "offers": [
+    {
+      "id": 100000,
+      "name": "Brawl Pass",
+      "description": "Brawl Pass: при покупке Brawl Pass помимо наград бесплатного уровня вы будете получать дополнительные награды. Также вы получите больше ресурсов и доступ к определенному бойцу по достижении соответствующего уровня. Если вы уже разблокировали этого бойца, то получите альтернативную награду.",
+      "banner1": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100000Banner1.png",
+      "banner2": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100000Banner2.png",
+      "variants": [],
+      "price": 875,
+      "discount": 0,
+      "game": null
+    },
+    {
+      "id": 100001,
+      "name": "Brawl Pass Plus",
+      "description": "Brawl Pass Plus: при покупке этого пропуска вы получите все награды бесплатного уровня и награды Brawl Pass. Кроме того, вы получите больше ресурсов, цветовую вариацию скина, титул и мгновенное начисление 20 % опыта Brawl Pass.",
+      "banner1": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100001Banner1.png",
+      "banner2": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100001Banner2.png",
+      "variants": [
+        {
+          "name": "По входу",
+          "price": 1200
+        }
+      ],
+      "price": 0,
+      "discount": 5,
+      "game": null
+    },
+    {
+      "id": 100002,
+      "name": "Алмазный пропуск",
+      "description": "Хотите больше наград? Приобретите алмазный пропуск и получайте дополнительные награды!",
+      "banner1": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100002Banner1.png",
+      "banner2": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100002Banner2.png",
+      "variants": [],
+      "price": 1072,
+      "discount": 0,
+      "game": null
+    },
+    {
+      "id": 100003,
+      "name": "Кристаллы",
+      "description": "Кристаллы — валюта, получаемая в Brawl Pass или в Магазине и используемая для покупки скинов, удвоителей боевого опыта, монет, ежедневных предложений и акций.",
+      "banner1": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100003Banner1.png",
+      "banner2": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100003Banner2.png",
+      "variants": [
+        {
+          "name": "30 кристаллов",
+          "price": 220
+        },
+        {
+          "name": "80 кристаллов",
+          "price": 406
+        },
+        {
+          "name": "170 кристаллов",
+          "price": 871
+        },
+        {
+          "name": "360 кристаллов",
+          "price": 1690
+        },
+        {
+          "name": "950 кристаллов",
+          "price": 4206
+        },
+        {
+          "name": "2000 кристаллов",
+          "price": 7743
+        }
+      ],
+      "price": 0,
+      "discount": 2,
+      "game": null
+    },
+    {
+      "id": 100004,
+      "name": "Робуксы",
+      "description": "Хочешь быть не таким, как все? Тебе нужны Робуксы! Именно они позволяют тебе выделяться из толпы, покупая крутейшие вещи для аватара и получая способности в играх.",
+      "banner1": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100004Banner1.png",
+      "banner2": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100004Banner2.png",
+      "variants": [
+        {
+          "name": "50 робуксов",
+          "price": 62
+        },
+        {
+          "name": "100 робуксов",
+          "price": 114
+        },
+        {
+          "name": "200 робуксов",
+          "price": 208
+        },
+        {
+          "name": "500 робуксов",
+          "price": 490
+        }
+      ],
+      "price": 0,
+      "discount": 0,
+      "game": null
+    },
+    {
+      "id": 100005,
+      "name": "Суперский пропуск",
+      "description": "Хотите больше наград? Приобретите суперский пропуск и получайте дополнительные награды вместе с наградами кристального пропуска!",
+      "banner1": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100005Banner1.png",
+      "banner2": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100005Banner2.png",
+      "variants": [
+        {
+          "name": "По входу",
+          "price": 930
+        },
+        {
+          "name": "Начальный пропуск",
+          "price": 515
+        }
+      ],
+      "price": 0,
+      "discount": 0,
+      "game": null
+    },
+    {
+      "id": 100006,
+      "name": "Монеты",
+      "description": "Необходимы для улучшения бойцов и покупок в магазине. Получить их можно в бою, в магазине, сезонном пропуске или пути отряда, а также за кристаллы.",
+      "banner1": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100006Banner1.png",
+      "banner2": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100006Banner2.png",
+      "variants": [
+        {
+          "name": "10000 монет",
+          "price": 97
+        },
+        {
+          "name": "52500 монет",
+          "price": 259
+        },
+        {
+          "name": "110000 монет",
+          "price": 824
+        },
+        {
+          "name": "230000 монет",
+          "price": 1545
+        },
+        {
+          "name": "600000 монет",
+          "price": 3752
+        },
+        {
+          "name": "1250000 монет",
+          "price": 6974
+        }
+      ],
+      "price": 0,
+      "discount": 0,
+      "game": null
+    },
+    {
+      "id": 100007,
+      "name": "Значки",
+      "description": "Гоблин, Идеальные пропорции или Дракончик на ваш аккаунт!",
+      "banner1": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100007Banner1.png",
+      "banner2": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100007Banner2.png",
+      "variants": [
+        {
+          "name": "Грусть Гоблина",
+          "price": 480
+        },
+        {
+          "name": "Идеальные пропорции",
+          "price": 480
+        },
+        {
+          "name": "Танцующий дракончик",
+          "price": 480
+        }
+      ],
+      "price": 0,
+      "discount": 0,
+      "game": null
+    },
+    {
+      "id": 100008,
+      "name": "Разблокируй эволюции!",
+      "description": "Получи эволюции на свой аккаунт!",
+      "banner1": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100008Banner1.png",
+      "banner2": "https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/main/LifeShop/Offer100008Banner2.png",
+      "variants": [
+        {
+          "name": "Печь x3",
+          "price": 560
+        },
+        {
+          "name": "Валькирия x3",
+          "price": 560
+        },
+        {
+          "name": "Скелеты x3",
+          "price": 560
+        },
+        {
+          "name": "Варвары x3",
+          "price": 560
+        },
+        {
+          "name": "Маг x3",
+          "price": 560
+        },
+        {
+          "name": "Подрывник x3",
+          "price": 560
+        },
+        {
+          "name": "Электродракон x3",
+          "price": 560
+        },
+        {
+          "name": "Лучницы x3",
+          "price": 560
+        },
+        {
+          "name": "Ледяной дух x3",
+          "price": 560
+        },
+        {
+          "name": "Мортира x3",
+          "price": 560
+        },
+        {
+          "name": "Ведьма x3",
+          "price": 560
+        },
+        {
+          "name": "Мегарыцарь x3",
+          "price": 560
+        },
+        {
+          "name": "Пушка x3",
+          "price": 560
+        },
+        {
+          "name": "П.Е.К.К.А. x3",
+          "price": 560
+        },
+        {
+          "name": "Огненная лучница x3",
+          "price": 560
+        },
+        {
+          "name": "Рыцарь x3",
+          "price": 560
+        },
+        {
+          "name": "Гоблин-гигант x3",
+          "price": 560
+        },
+        {
+          "name": "Стенобои x3",
+          "price": 560
+        },
+        {
+          "name": "Гигантский снежок x3",
+          "price": 560
+        },
+        {
+          "name": "Гоблинская бочка x3",
+          "price": 560
+        },
+        {
+          "name": "Бочка со скелетами x3",
+          "price": 560
+        },
+        {
+          "name": "Пламенный дракон x3",
+          "price": 560
+        },
+        {
+          "name": "Палач x3",
+          "price": 560
+        },
+        {
+          "name": "Охотник x3",
+          "price": 560
+        },
+        {
+          "name": "Дровосек x3",
+          "price": 560
+        },
+        {
+          "name": "Королевский гигант x3",
+          "price": 560
+        },
+        {
+          "name": "Мушкетер x3",
+          "price": 560
+        },
+        {
+          "name": "Королевские рекруты x3",
+          "price": 560
+        },
+        {
+          "name": "Клетка с гоблином x3",
+          "price": 560
+        },
+        {
+          "name": "Разряд x3",
+          "price": 560
+        },
+        {
+          "name": "Летучие мыши x3",
+          "price": 560
+        },
+        {
+          "name": "Боевой таран x3",
+          "price": 560
+        },
+        {
+          "name": "Гоблинский бур x3",
+          "price": 560
+        }
+      ],
+      "price": 0,
+      "discount": 0,
+      "game": null
+    }
+  ]
+}
