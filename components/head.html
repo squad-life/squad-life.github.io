@@ -1,6 +1,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<title>Life Shop — донат в игры</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="/css/main.css">
+<style>
+  /* все глобальные стили (CSS-переменные, сброс, анимации, скелетоны) */
+  * { margin:0; padding:0; box-sizing:border-box; user-select:none; -webkit-tap-highlight-color:transparent; }
+  :root {
+    --bg: #0c0c0e; --surface: #141416; --surface-elevated: #1c1c20;
+    --accent: #7c4dff; --accent-dim: #4a2c9e; --text: #ffffff;
+    --text-secondary: #a0a0b0; --border: rgba(255,255,255,0.06);
+    --radius-card: 24px; --radius-element: 16px;
+  }
+  body { background-color: var(--bg); color: var(--text); font-family: -apple-system, 'Inter', system-ui; padding: 0 16px 90px 16px; font-weight: 450; line-height: 1.4; -webkit-font-smoothing: antialiased; }
+  .container { max-width: 540px; margin: 0 auto; }
+  /* ... и все остальные стили из предыдущей версии, включая header, карточки, скроллы ... */
+</style>
