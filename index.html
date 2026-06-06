@@ -1,209 +1,353 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <title>Life Shop — главная</title>
-    <script src="components/head.html"></script>
+  <title>Life Shop — главная</title>
+  <!-- подключаем общий head -->
+  <script>
+    fetch('/components/head.html')
+      .then(res => res.text())
+      .then(html => document.head.insertAdjacentHTML('afterbegin', html));
+  </script>
+  <style>
+    /* дополнительные стили только для главной */
+    .moko-teaser {
+      background: rgba(20, 20, 28, 0.7);
+      backdrop-filter: blur(12px);
+      border-radius: 32px;
+      margin: 4px 0 28px 0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 18px 12px 12px;
+      border: 1px solid rgba(124, 77, 255, 0.25);
+      cursor: pointer;
+      transition: 0.1s ease;
+    }
+    .moko-teaser:active { transform: scale(0.97); }
+    .moko-teaser-img { width: 68px; height: 68px; overflow: hidden; }
+    .moko-teaser-img img { width: 100%; height: 100%; object-fit: cover; }
+    .moko-teaser-text { flex: 1; font-size: 15px; font-weight: 510; color: #dddcee; }
+    .moko-teaser-text span { color: var(--accent); font-weight: 600; }
+    .moko-teaser i { font-size: 18px; color: var(--accent); margin-left: auto; }
+
+    .section { margin-bottom: 32px; }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 0 4px;
+      margin-bottom: 16px;
+    }
+    .section-title { font-size: 20px; font-weight: 650; color: var(--text); }
+    .section-link { font-size: 14px; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 6px; }
+    .section-link:active { transform: scale(0.96); }
+
+    .games-scroll, .products-scroll {
+      display: flex;
+      gap: 18px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding-bottom: 12px;
+    }
+    .games-scroll::-webkit-scrollbar, .products-scroll::-webkit-scrollbar { display: none; }
+
+    .game-card {
+      flex: 0 0 auto;
+      width: 86px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .game-card:active { transform: scale(0.95); }
+    .game-icon {
+      width: 86px;
+      height: 86px;
+      background: var(--surface);
+      border-radius: 28px;
+      overflow: hidden;
+      margin-bottom: 8px;
+      border: 1px solid var(--border);
+    }
+    .game-icon img { width: 100%; height: 100%; object-fit: cover; }
+    .game-name { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+
+    .product-card {
+      flex: 0 0 auto;
+      width: 164px;
+      background: var(--surface);
+      border-radius: 26px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      transition: 0.2s;
+    }
+    .product-card:active { transform: scale(0.97); }
+    .product-banner {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #0a0a0c;
+      overflow: hidden;
+    }
+    .product-banner img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .product-banner img.active { opacity: 1; }
+    .product-info { padding: 12px 12px 14px; }
+    .product-name { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 6px; }
+    .price-row { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+    .product-price { font-size: 17px; font-weight: 700; color: var(--accent); }
+    .old-price { font-size: 13px; color: #8e8e9e; text-decoration: line-through; }
+    .discount-badge { background: rgba(124, 77, 255, 0.2); padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; color: var(--accent); display: inline-block; margin-top: 4px; }
+
+    .reviews-card {
+      background: rgba(22, 22, 28, 0.65);
+      backdrop-filter: blur(12px);
+      border-radius: 28px;
+      padding: 20px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.05);
+      margin-top: 8px;
+    }
+    .reviews-card i { font-size: 32px; color: var(--accent); opacity: 0.8; margin-bottom: 8px; display: inline-block; }
+    .reviews-text { font-size: 14px; color: var(--text-secondary); margin-bottom: 14px; }
+    .reviews-btn {
+      background: rgba(124, 77, 255, 0.2);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 40px;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    .reviews-btn:active { transform: scale(0.96); }
+  </style>
 </head>
 <body>
 <div class="container">
-    <header>
-        <div class="logo">
-            <img src="https://raw.githubusercontent.com/squad-life/squad-life.github.io/main/assets/logo.png" alt="Life Shop" onerror="this.src='https://placehold.co/200x60/141416/7c4dff?text=Life+Shop'">
-        </div>
-        <div class="user-avatar" id="user-avatar">
-            <img id="avatar-img" src="" alt="avatar">
-        </div>
-    </header>
+  <div id="header-placeholder"></div>
 
-    <!-- Моко тизер -->
-    <div class="moko-teaser fade-in" id="mokoTeaser">
-        <div class="moko-teaser-img">
-            <img src="https://raw.githubusercontent.com/SquadBustersLife/SquadBustersLife.github.io/refs/heads/main/assets/moco_Luna_tough_shades_1052x1378.png" alt="Moko">
-        </div>
-        <div class="moko-teaser-text">
-            <span>Охотник</span>, портал открыт! Улучши свой аутфит перед сражением с монстрами!
-        </div>
-        <i class="fas fa-arrow-right"></i>
+  <!-- Моко тизер (картинка исправлена) -->
+  <div class="moko-teaser fade-in" id="mokoTeaser">
+    <div class="moko-teaser-img">
+      <img src="https://raw.githubusercontent.com/squad-life/squad-life.github.io/main/assets/moko.png" alt="Moko" onerror="this.src='https://placehold.co/68x68/252540/7c4dff?text=M'">
     </div>
+    <div class="moko-teaser-text">
+      <span>Охотник</span>, портал открыт! Улучши свой аутфит перед сражением с монстрами!
+    </div>
+    <i class="fas fa-arrow-right"></i>
+  </div>
 
-    <!-- Игры -->
-    <div class="section">
-        <div class="section-header">
-            <h2 class="section-title">Игры</h2>
-            <a href="games.html" class="section-link">Все <i class="fas fa-arrow-right"></i></a>
-        </div>
-        <div class="games-scroll" id="gamesContainer"></div>
+  <!-- Игры -->
+  <div class="section">
+    <div class="section-header">
+      <h2 class="section-title">Игры</h2>
+      <a href="games.html" class="section-link">Все <i class="fas fa-arrow-right"></i></a>
     </div>
+    <div class="games-scroll" id="gamesContainer"></div>
+  </div>
 
-    <!-- Скидки -->
-    <div class="section" id="discountSection" style="display: none;">
-        <div class="section-header"><h2 class="section-title">Скидки</h2></div>
-        <div class="products-scroll" id="discountContainer"></div>
-    </div>
+  <!-- Скидки -->
+  <div class="section" id="discountSection" style="display: none;">
+    <div class="section-header"><h2 class="section-title">Скидки</h2></div>
+    <div class="products-scroll" id="discountContainer"></div>
+  </div>
 
-    <!-- Популярное (временно скрыто, пока нет популярных ID) -->
-    <div class="section" id="popularSection" style="display: none;">
-        <div class="section-header"><h2 class="section-title">Популярное</h2></div>
-        <div class="products-scroll" id="popularContainer"></div>
-    </div>
+  <!-- Популярное (если нет в JSON, покажем первые 6 товаров) -->
+  <div class="section" id="popularSection">
+    <div class="section-header"><h2 class="section-title">Популярное</h2></div>
+    <div class="products-scroll" id="popularContainer"></div>
+  </div>
 
-    <!-- Новинки -->
-    <div class="section" id="newSection" style="display: none;">
-        <div class="section-header"><h2 class="section-title">Новинки</h2></div>
-        <div class="products-scroll" id="newContainer"></div>
-    </div>
+  <!-- Новинки -->
+  <div class="section" id="newSection" style="display: none;">
+    <div class="section-header"><h2 class="section-title">Новинки</h2></div>
+    <div class="products-scroll" id="newContainer"></div>
+  </div>
 
-    <!-- Отзывы -->
-    <div class="reviews-card">
-        <i class="fas fa-message"></i>
-        <p class="reviews-text">Честные отзывы игроков, Telegram-канал</p>
-        <button class="reviews-btn" id="reviewsBtn"><i class="fab fa-telegram"></i> Читать</button>
-    </div>
+  <!-- Отзывы -->
+  <div class="reviews-card">
+    <i class="fas fa-message"></i>
+    <p class="reviews-text">Честные отзывы игроков, Telegram-канал</p>
+    <button class="reviews-btn" id="reviewsBtn"><i class="fab fa-telegram"></i> Читать</button>
+  </div>
 </div>
 
-<script src="components/nav-bar.html"></script>
+<div id="nav-placeholder"></div>
 
 <script>
-    const tg = window.Telegram.WebApp;
-    tg.expand();
-    tg.enableClosingConfirmation();
-    tg.setHeaderColor('#0c0c0e');
-    tg.setBackgroundColor('#0c0c0e');
+  // ========== ЗАГРУЗКА КОМПОНЕНТОВ ==========
+  fetch('/components/header.html')
+    .then(res => res.text())
+    .then(html => document.getElementById('header-placeholder').innerHTML = html);
+  fetch('/components/nav-bar.html')
+    .then(res => res.text())
+    .then(html => document.getElementById('nav-placeholder').innerHTML = html)
+    .then(() => {
+      // подсветка активного пункта меню
+      const links = document.querySelectorAll('.nav-item-glass');
+      links.forEach(link => {
+        if (link.getAttribute('href') === 'index.html') link.classList.add('active');
+      });
+    });
 
-    // Аватар пользователя
-    const user = tg.initDataUnsafe.user;
+  // ========== ИНИЦИАЛИЗАЦИЯ TELEGRAM ==========
+  const tg = window.Telegram.WebApp;
+  tg.expand();
+  tg.enableClosingConfirmation();
+  tg.setHeaderColor('#0c0c0e');
+  tg.setBackgroundColor('#0c0c0e');
+
+  // аватар
+  const user = tg.initDataUnsafe.user;
+  setTimeout(() => {
     const avatarImg = document.getElementById('avatar-img');
-    if (user?.photo_url) avatarImg.src = user.photo_url;
-    else avatarImg.src = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
-    
-    document.getElementById('user-avatar').onclick = () => location.href = 'account.html';
-    document.getElementById('mokoTeaser').onclick = () => location.href = 'game.html?game=Moko';
-    document.getElementById('reviewsBtn').onclick = () => window.open('https://t.me/akchotzivi', '_blank');
-
-    const DATA_BASE = 'https://raw.githubusercontent.com/squad-life/squad-life.github.io/main/data/';
-    let allOffers = [];
-    let gamesList = [];
-    let collections = { popular: [], discount: [], new: [] };
-
-    async function loadData() {
-        try {
-            const [offersRes, gamesRes, collectionsRes] = await Promise.all([
-                fetch(`${DATA_BASE}all_offers.json`),
-                fetch(`${DATA_BASE}games.json`),
-                fetch(`${DATA_BASE}collections.json`)
-            ]);
-            if (offersRes.ok) allOffers = (await offersRes.json()).offers || [];
-            if (gamesRes.ok) gamesList = await gamesRes.json();
-            if (collectionsRes.ok) collections = await collectionsRes.json();
-            
-            console.log('Загружено товаров:', allOffers.length);
-            console.log('Коллекции:', collections);
-            
-            renderGames();
-            renderCollections();
-        } catch(e) { console.error('Ошибка загрузки:', e); renderGamesFallback(); }
+    if (avatarImg) {
+      if (user?.photo_url) avatarImg.src = user.photo_url;
+      else avatarImg.src = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
     }
+    const userAvatar = document.getElementById('user-avatar');
+    if (userAvatar) userAvatar.addEventListener('click', () => window.location.href = 'account.html');
+  }, 200);
 
-    function renderGames() {
-        const container = document.getElementById('gamesContainer');
-        if (!gamesList.length) { container.innerHTML = '<div style="color:#888;">Игры не загружены</div>'; return; }
-        container.innerHTML = '';
-        gamesList.slice(0, 8).forEach((game, idx) => {
-            const card = document.createElement('div');
-            card.className = `game-card fade-in delay-${(idx % 4) + 1}`;
-            card.onclick = () => location.href = `game.html?game=${encodeURIComponent(game.name)}`;
-            card.innerHTML = `<div class="game-icon"><img src="${game.logo}" alt="${game.name}" onerror="this.src='https://placehold.co/86x86/1c1c20/7c4dff?text=${game.name.charAt(0)}'"></div><div class="game-name">${game.name}</div>`;
-            container.appendChild(card);
-        });
+  // Моко тизер
+  const moko = document.getElementById('mokoTeaser');
+  if (moko) moko.addEventListener('click', () => window.location.href = 'game.html?game=Moko');
+
+  // кнопка отзывов
+  const reviewsBtn = document.getElementById('reviewsBtn');
+  if (reviewsBtn) reviewsBtn.addEventListener('click', () => window.open('https://t.me/akchotzivi', '_blank'));
+
+  // ========== ЗАГРУЗКА ДАННЫХ ==========
+  const DATA_BASE = 'https://raw.githubusercontent.com/squad-life/squad-life.github.io/main/data/';
+  let allOffers = [];
+  let gamesList = [];
+
+  async function loadData() {
+    try {
+      const [offersRes, gamesRes, collectionsRes] = await Promise.all([
+        fetch(`${DATA_BASE}all_offers.json`),
+        fetch(`${DATA_BASE}games.json`),
+        fetch(`${DATA_BASE}collections.json`)
+      ]);
+      if (offersRes.ok) allOffers = (await offersRes.json()).offers || [];
+      if (gamesRes.ok) gamesList = await gamesRes.json();
+      let collections = { popular: [], discount: [], new: [] };
+      if (collectionsRes.ok) collections = await collectionsRes.json();
+
+      renderGames();
+      renderSections(collections);
+    } catch (e) {
+      console.error('Ошибка загрузки:', e);
     }
+  }
 
-    function renderGamesFallback() {
-        const fallback = [{ name: 'Brawl Stars', logo: 'https://placehold.co/86x86/1c1c20/7c4dff?text=BS' }];
-        const container = document.getElementById('gamesContainer');
-        container.innerHTML = '';
-        fallback.forEach((game, idx) => {
-            const card = document.createElement('div');
-            card.className = `game-card fade-in delay-${idx+1}`;
-            card.onclick = () => location.href = `game.html?game=${game.name}`;
-            card.innerHTML = `<div class="game-icon"><img src="${game.logo}" alt="${game.name}"></div><div class="game-name">${game.name}</div>`;
-            container.appendChild(card);
-        });
+  function renderGames() {
+    const container = document.getElementById('gamesContainer');
+    if (!gamesList.length) { container.innerHTML = '<div style="color:#888; padding:12px;">Игры не загружены</div>'; return; }
+    container.innerHTML = '';
+    gamesList.slice(0, 8).forEach((game, idx) => {
+      const card = document.createElement('div');
+      card.className = `game-card fade-in delay-${(idx % 4) + 1}`;
+      card.onclick = () => window.location.href = `game.html?game=${encodeURIComponent(game.name)}`;
+      card.innerHTML = `
+        <div class="game-icon"><img src="${game.logo}" alt="${game.name}" onerror="this.src='https://placehold.co/86x86/1c1c20/7c4dff?text=${game.name.charAt(0)}'"></div>
+        <div class="game-name">${game.name}</div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  function renderSections(collections) {
+    // Скидки
+    if (collections.discount?.length) {
+      const discountProducts = collections.discount.map(id => allOffers.find(o => o.id === id)).filter(Boolean);
+      if (discountProducts.length) {
+        document.getElementById('discountSection').style.display = 'block';
+        renderProductList(discountProducts, 'discountContainer');
+      }
     }
-
-    function renderCollections() {
-        // Скидки
-        if (collections.discount?.length) {
-            const products = collections.discount.map(id => allOffers.find(o => o.id === id)).filter(Boolean);
-            if (products.length) {
-                document.getElementById('discountSection').style.display = 'block';
-                renderProductList(products, 'discountContainer');
-            }
-        }
-        // Новинки
-        if (collections.new?.length) {
-            const products = collections.new.map(id => allOffers.find(o => o.id === id)).filter(Boolean);
-            if (products.length) {
-                document.getElementById('newSection').style.display = 'block';
-                renderProductList(products, 'newContainer');
-            }
-        }
-        // Если популярных нет — показываем первые 6 товаров из каталога
-        const popularProducts = collections.popular?.length 
-            ? collections.popular.map(id => allOffers.find(o => o.id === id)).filter(Boolean)
-            : allOffers.slice(0, 6);
-        if (popularProducts.length) {
-            document.getElementById('popularSection').style.display = 'block';
-            renderProductList(popularProducts, 'popularContainer');
-        }
+    // Новинки
+    if (collections.new?.length) {
+      const newProducts = collections.new.map(id => allOffers.find(o => o.id === id)).filter(Boolean);
+      if (newProducts.length) {
+        document.getElementById('newSection').style.display = 'block';
+        renderProductList(newProducts, 'newContainer');
+      }
     }
-
-    function renderProductList(products, containerId) {
-        const container = document.getElementById(containerId);
-        if (!products.length) { container.innerHTML = '<div style="color:#888;">Нет товаров</div>'; return; }
-        container.innerHTML = '';
-        products.forEach((product, idx) => {
-            const price = product.variants?.length ? product.variants[0].price : (product.price || 0);
-            const hasDiscount = product.discount > 0;
-            let finalPrice = hasDiscount ? Math.round(price * (1 - product.discount / 100)) : price;
-            let priceHtml = hasDiscount 
-                ? `<div class="price-row"><div class="product-price">${finalPrice} ₽</div><div class="old-price">${price} ₽</div></div>`
-                : `<div class="product-price">${price} ₽</div>`;
-            
-            const card = document.createElement('div');
-            card.className = `product-card fade-in delay-${(idx % 4) + 1}`;
-            card.onclick = () => location.href = `offer.html?id=${product.id}`;
-            card.innerHTML = `
-                <div class="product-banner" id="banner-${product.id}">
-                    <img src="${product.banner1}" class="active" alt="">
-                    <img src="${product.banner2}" alt="">
-                </div>
-                <div class="product-info">
-                    <div class="product-name">${escapeHtml(product.name)}</div>
-                    ${priceHtml}
-                    ${hasDiscount ? `<div class="discount-badge">-${product.discount}%</div>` : ''}
-                </div>
-            `;
-            container.appendChild(card);
-            startBannerRotation(product.id);
-        });
+    // Популярное (если нет — берём первые 6 товаров)
+    let popularProducts = [];
+    if (collections.popular?.length) {
+      popularProducts = collections.popular.map(id => allOffers.find(o => o.id === id)).filter(Boolean);
     }
-
-    function startBannerRotation(id) {
-        const bannerDiv = document.getElementById(`banner-${id}`);
-        if (!bannerDiv) return;
-        const imgs = bannerDiv.querySelectorAll('img');
-        if (imgs.length < 2) return;
-        let current = 0;
-        setInterval(() => {
-            imgs[current].classList.remove('active');
-            current = (current + 1) % imgs.length;
-            imgs[current].classList.add('active');
-        }, 5000);
+    if (!popularProducts.length) {
+      popularProducts = allOffers.slice(0, 6);
     }
+    renderProductList(popularProducts, 'popularContainer');
+  }
 
-    function escapeHtml(str) { return str?.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])) || ''; }
+  function renderProductList(products, containerId) {
+    const container = document.getElementById(containerId);
+    if (!products.length) { container.innerHTML = '<div style="color:#888; padding:24px;">Нет товаров</div>'; return; }
+    container.innerHTML = '';
+    products.forEach((product, idx) => {
+      const price = product.variants?.length ? product.variants[0].price : (product.price || 0);
+      const hasDiscount = product.discount > 0;
+      let finalPrice = hasDiscount ? Math.round(price * (1 - product.discount / 100)) : price;
+      let priceHtml = `<div class="product-price">${finalPrice} ₽</div>`;
+      let discountHtml = '';
+      if (hasDiscount) {
+        priceHtml = `<div class="price-row"><div class="product-price">${finalPrice} ₽</div><div class="old-price">${price} ₽</div></div>`;
+        discountHtml = `<div class="discount-badge">-${product.discount}%</div>`;
+      }
+      const card = document.createElement('div');
+      card.className = `product-card fade-in delay-${(idx % 4) + 1}`;
+      card.onclick = () => window.location.href = `offer.html?id=${product.id}`;
+      card.innerHTML = `
+        <div class="product-banner" id="banner-${product.id}">
+          <img src="${product.banner1}" class="active" alt="">
+          <img src="${product.banner2}" alt="">
+        </div>
+        <div class="product-info">
+          <div class="product-name">${escapeHtml(product.name)}</div>
+          ${priceHtml}
+          ${discountHtml}
+        </div>
+      `;
+      container.appendChild(card);
+      startBannerRotation(product.id);
+    });
+  }
 
-    loadData();
+  function startBannerRotation(id) {
+    const div = document.getElementById(`banner-${id}`);
+    if (!div) return;
+    const imgs = div.querySelectorAll('img');
+    if (imgs.length < 2) return;
+    let current = 0;
+    setInterval(() => {
+      imgs[current].classList.remove('active');
+      current = (current + 1) % imgs.length;
+      imgs[current].classList.add('active');
+    }, 5000);
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+  }
+
+  loadData();
 </script>
 </body>
 </html>
