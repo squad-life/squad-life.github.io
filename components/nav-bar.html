@@ -1,23 +1,73 @@
-<style>
-  .bottom-nav-glass {
-    position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%);
-    width: calc(100% - 32px); max-width: 500px;
-    background: rgba(12, 12, 18, 0.65); backdrop-filter: blur(28px);
-    border-radius: 60px; display: flex; justify-content: space-around;
-    padding: 6px 12px; border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); z-index: 100;
-  }
-  .nav-item-glass {
-    display: flex; flex-direction: column; align-items: center; text-decoration: none;
-    color: #8e8e9e; font-size: 11px; font-weight: 500; gap: 4px;
-    padding: 8px 16px; border-radius: 50px; transition: 0.2s; cursor: pointer;
-  }
-  .nav-item-glass.active { color: #7c4dff; background: rgba(124, 77, 255, 0.18); }
-  .nav-item-glass:active { transform: scale(0.96); }
-  .nav-icon-glass { font-size: 22px; }
-</style>
 <div class="bottom-nav-glass">
-  <a href="index.html" class="nav-item-glass"><div class="nav-icon-glass"><i class="fas fa-home"></i></div><span>Главная</span></a>
-  <a href="games.html" class="nav-item-glass"><div class="nav-icon-glass"><i class="fas fa-gamepad"></i></div><span>Игры</span></a>
-  <a href="account.html" class="nav-item-glass"><div class="nav-icon-glass"><i class="fas fa-user"></i></div><span>Профиль</span></a>
+    <a href="index.html" class="nav-item-glass" data-nav="home">
+        <div class="nav-icon-glass"><i class="fas fa-home"></i></div>
+        <span>Главная</span>
+    </a>
+    <a href="games.html" class="nav-item-glass" data-nav="games">
+        <div class="nav-icon-glass"><i class="fas fa-gamepad"></i></div>
+        <span>Игры</span>
+    </a>
+    <a href="account.html" class="nav-item-glass" data-nav="profile">
+        <div class="nav-icon-glass"><i class="fas fa-user"></i></div>
+        <span>Профиль</span>
+    </a>
 </div>
+
+<style>
+    .bottom-nav-glass {
+        position: fixed;
+        bottom: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 32px);
+        max-width: 500px;
+        background: rgba(12, 12, 18, 0.65);
+        backdrop-filter: blur(28px);
+        border-radius: 60px;
+        display: flex;
+        justify-content: space-around;
+        padding: 6px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        z-index: 100;
+    }
+    .nav-item-glass {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: #8e8e9e;
+        font-size: 11px;
+        font-weight: 500;
+        gap: 4px;
+        padding: 8px 16px;
+        border-radius: 50px;
+        transition: 0.2s;
+        cursor: pointer;
+    }
+    .nav-item-glass.active {
+        color: #7c4dff;
+        background: rgba(124, 77, 255, 0.18);
+    }
+    .nav-item-glass:active {
+        transform: scale(0.96);
+    }
+    .nav-icon-glass {
+        font-size: 22px;
+    }
+</style>
+
+<script>
+    // Подсветка активного пункта
+    const currentPath = window.location.pathname;
+    document.querySelectorAll('.nav-item-glass').forEach(link => {
+        const href = link.getAttribute('href');
+        if (href === 'index.html' && (currentPath === '/' || currentPath.endsWith('index.html') || currentPath.endsWith('/'))) {
+            link.classList.add('active');
+        } else if (href && currentPath.includes(href)) {
+            link.classList.add('active');
+        } else if (href === 'index.html' && !currentPath.includes('games') && !currentPath.includes('account')) {
+            link.classList.add('active');
+        }
+    });
+</script>
