@@ -1,353 +1,300 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <title>Life Shop — главная</title>
-  <!-- подключаем общий head -->
-  <script>
-    fetch('/components/head.html')
-      .then(res => res.text())
-      .then(html => document.head.insertAdjacentHTML('afterbegin', html));
-  </script>
-  <style>
-    /* дополнительные стили только для главной */
-    .moko-teaser {
-      background: rgba(20, 20, 28, 0.7);
-      backdrop-filter: blur(12px);
-      border-radius: 32px;
-      margin: 4px 0 28px 0;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 12px 18px 12px 12px;
-      border: 1px solid rgba(124, 77, 255, 0.25);
-      cursor: pointer;
-      transition: 0.1s ease;
-    }
-    .moko-teaser:active { transform: scale(0.97); }
-    .moko-teaser-img { width: 68px; height: 68px; overflow: hidden; }
-    .moko-teaser-img img { width: 100%; height: 100%; object-fit: cover; }
-    .moko-teaser-text { flex: 1; font-size: 15px; font-weight: 510; color: #dddcee; }
-    .moko-teaser-text span { color: var(--accent); font-weight: 600; }
-    .moko-teaser i { font-size: 18px; color: var(--accent); margin-left: auto; }
+    <script>
+        // Загружаем общий head
+        fetch('components/head.html')
+            .then(res => res.text())
+            .then(html => document.head.insertAdjacentHTML('afterbegin', html))
+            .catch(() => {
+                // fallback если компонент не загрузился
+                const meta = document.createElement('meta');
+                meta.setAttribute('charset', 'UTF-8');
+                document.head.appendChild(meta);
+                const viewport = document.createElement('meta');
+                viewport.setAttribute('name', 'viewport');
+                viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no');
+                document.head.appendChild(viewport);
+                const title = document.createElement('title');
+                title.textContent = 'Life Shop';
+                document.head.appendChild(title);
+            });
+    </script>
+    <style>
+        /* дополнительные стили главной страницы (не дублируем глобальные) */
+        .moco-teaser {
+            background: rgba(20, 20, 28, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 32px;
+            margin: 4px 0 28px 0;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 18px 12px 12px;
+            border: 1px solid rgba(124, 77, 255, 0.25);
+            cursor: pointer;
+            transition: 0.1s ease;
+        }
+        .moco-teaser:active { transform: scale(0.97); }
+        .moco-teaser-img { width: 68px; height: 68px; overflow: hidden; border-radius: 20px; }
+        .moco-teaser-img img { width: 100%; height: 100%; object-fit: cover; }
+        .moco-teaser-text { flex: 1; font-size: 15px; color: #dddcee; }
+        .moco-teaser-text span { color: #7c4dff; font-weight: 600; }
+        .moco-teaser i { font-size: 18px; color: #7c4dff; margin-left: auto; }
 
-    .section { margin-bottom: 32px; }
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      padding: 0 4px;
-      margin-bottom: 16px;
-    }
-    .section-title { font-size: 20px; font-weight: 650; color: var(--text); }
-    .section-link { font-size: 14px; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 6px; }
-    .section-link:active { transform: scale(0.96); }
+        .section { margin-bottom: 32px; }
+        .section-header { display: flex; justify-content: space-between; align-items: baseline; padding: 0 4px; margin-bottom: 16px; }
+        .section-title { font-size: 20px; font-weight: 650; color: #ffffff; }
+        .section-link { font-size: 14px; color: #7c4dff; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+        .section-link:active { transform: scale(0.96); }
 
-    .games-scroll, .products-scroll {
-      display: flex;
-      gap: 18px;
-      overflow-x: auto;
-      scrollbar-width: none;
-      padding-bottom: 12px;
-    }
-    .games-scroll::-webkit-scrollbar, .products-scroll::-webkit-scrollbar { display: none; }
+        .games-scroll, .products-scroll {
+            display: flex;
+            gap: 18px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding-bottom: 12px;
+        }
+        .games-scroll::-webkit-scrollbar, .products-scroll::-webkit-scrollbar { display: none; }
 
-    .game-card {
-      flex: 0 0 auto;
-      width: 86px;
-      text-align: center;
-      cursor: pointer;
-    }
-    .game-card:active { transform: scale(0.95); }
-    .game-icon {
-      width: 86px;
-      height: 86px;
-      background: var(--surface);
-      border-radius: 28px;
-      overflow: hidden;
-      margin-bottom: 8px;
-      border: 1px solid var(--border);
-    }
-    .game-icon img { width: 100%; height: 100%; object-fit: cover; }
-    .game-name { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+        .game-card { flex: 0 0 auto; width: 86px; text-align: center; cursor: pointer; }
+        .game-card:active { transform: scale(0.95); }
+        .game-icon { width: 86px; height: 86px; background: #141416; border-radius: 28px; overflow: hidden; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.06); }
+        .game-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .game-name { font-size: 13px; font-weight: 500; color: #a0a0b0; }
 
-    .product-card {
-      flex: 0 0 auto;
-      width: 164px;
-      background: var(--surface);
-      border-radius: 26px;
-      overflow: hidden;
-      cursor: pointer;
-      border: 1px solid var(--border);
-      transition: 0.2s;
-    }
-    .product-card:active { transform: scale(0.97); }
-    .product-banner {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      background: #0a0a0c;
-      overflow: hidden;
-    }
-    .product-banner img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 0.4s;
-    }
-    .product-banner img.active { opacity: 1; }
-    .product-info { padding: 12px 12px 14px; }
-    .product-name { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 6px; }
-    .price-row { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
-    .product-price { font-size: 17px; font-weight: 700; color: var(--accent); }
-    .old-price { font-size: 13px; color: #8e8e9e; text-decoration: line-through; }
-    .discount-badge { background: rgba(124, 77, 255, 0.2); padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; color: var(--accent); display: inline-block; margin-top: 4px; }
+        .product-card { flex: 0 0 auto; width: 164px; background: #141416; border-radius: 26px; overflow: hidden; cursor: pointer; border: 1px solid rgba(255,255,255,0.06); }
+        .product-card:active { transform: scale(0.97); }
+        .product-banner { position: relative; width: 100%; aspect-ratio: 1 / 1; background: #0a0a0c; overflow: hidden; }
+        .product-banner img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.4s; }
+        .product-banner img.active { opacity: 1; }
+        .product-info { padding: 12px 12px 14px; }
+        .product-name { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 6px; }
+        .price-row { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+        .product-price { font-size: 17px; font-weight: 700; color: #7c4dff; }
+        .old-price { font-size: 13px; color: #8e8e9e; text-decoration: line-through; }
+        .discount-badge { background: rgba(124,77,255,0.2); padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; color: #7c4dff; display: inline-block; margin-top: 4px; }
 
-    .reviews-card {
-      background: rgba(22, 22, 28, 0.65);
-      backdrop-filter: blur(12px);
-      border-radius: 28px;
-      padding: 20px;
-      text-align: center;
-      border: 1px solid rgba(255,255,255,0.05);
-      margin-top: 8px;
-    }
-    .reviews-card i { font-size: 32px; color: var(--accent); opacity: 0.8; margin-bottom: 8px; display: inline-block; }
-    .reviews-text { font-size: 14px; color: var(--text-secondary); margin-bottom: 14px; }
-    .reviews-btn {
-      background: rgba(124, 77, 255, 0.2);
-      border: none;
-      padding: 10px 20px;
-      border-radius: 40px;
-      color: var(--accent);
-      font-weight: 600;
-      font-size: 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-    }
-    .reviews-btn:active { transform: scale(0.96); }
-  </style>
+        .reviews-card { background: rgba(22,22,28,0.65); backdrop-filter: blur(12px); border-radius: 28px; padding: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.05); margin-top: 8px; }
+        .reviews-card i { font-size: 32px; color: #7c4dff; opacity: 0.8; margin-bottom: 8px; display: inline-block; }
+        .reviews-text { font-size: 14px; color: #a0a0b0; margin-bottom: 14px; }
+        .reviews-btn { background: rgba(124,77,255,0.2); border: none; padding: 10px 20px; border-radius: 40px; color: #7c4dff; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+        .reviews-btn:active { transform: scale(0.96); }
+    </style>
 </head>
 <body>
 <div class="container">
-  <div id="header-placeholder"></div>
+    <div id="header-placeholder"></div>
 
-  <!-- Моко тизер (картинка исправлена) -->
-  <div class="moko-teaser fade-in" id="mokoTeaser">
-    <div class="moko-teaser-img">
-      <img src="https://raw.githubusercontent.com/squad-life/squad-life.github.io/main/assets/moko.png" alt="Moko" onerror="this.src='https://placehold.co/68x68/252540/7c4dff?text=M'">
+    <!-- MoCo тизер (исправлено имя) -->
+    <div class="moco-teaser fade-in" id="mocoTeaser">
+        <div class="moco-teaser-img">
+            <img src="https://raw.githubusercontent.com/squad-life/squad-life.github.io/main/assets/MoCo.png" alt="MoCo" onerror="this.src='https://placehold.co/68x68/252540/7c4dff?text=MC'">
+        </div>
+        <div class="moco-teaser-text">
+            <span>Охотник</span>, портал открыт! Улучши свой аутфит перед сражением с монстрами!
+        </div>
+        <i class="fas fa-arrow-right"></i>
     </div>
-    <div class="moko-teaser-text">
-      <span>Охотник</span>, портал открыт! Улучши свой аутфит перед сражением с монстрами!
+
+    <!-- Игры -->
+    <div class="section">
+        <div class="section-header">
+            <h2 class="section-title">Игры</h2>
+            <a href="games.html" class="section-link">Все <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="games-scroll" id="gamesContainer"><div style="color:#888; padding:12px;">Загрузка игр...</div></div>
     </div>
-    <i class="fas fa-arrow-right"></i>
-  </div>
 
-  <!-- Игры -->
-  <div class="section">
-    <div class="section-header">
-      <h2 class="section-title">Игры</h2>
-      <a href="games.html" class="section-link">Все <i class="fas fa-arrow-right"></i></a>
+    <!-- Скидки -->
+    <div class="section" id="discountSection" style="display: none;">
+        <div class="section-header"><h2 class="section-title">Скидки</h2></div>
+        <div class="products-scroll" id="discountContainer"></div>
     </div>
-    <div class="games-scroll" id="gamesContainer"></div>
-  </div>
 
-  <!-- Скидки -->
-  <div class="section" id="discountSection" style="display: none;">
-    <div class="section-header"><h2 class="section-title">Скидки</h2></div>
-    <div class="products-scroll" id="discountContainer"></div>
-  </div>
+    <!-- Популярное -->
+    <div class="section" id="popularSection">
+        <div class="section-header"><h2 class="section-title">Популярное</h2></div>
+        <div class="products-scroll" id="popularContainer"><div style="color:#888; padding:24px;">Загрузка товаров...</div></div>
+    </div>
 
-  <!-- Популярное (если нет в JSON, покажем первые 6 товаров) -->
-  <div class="section" id="popularSection">
-    <div class="section-header"><h2 class="section-title">Популярное</h2></div>
-    <div class="products-scroll" id="popularContainer"></div>
-  </div>
+    <!-- Новинки -->
+    <div class="section" id="newSection" style="display: none;">
+        <div class="section-header"><h2 class="section-title">Новинки</h2></div>
+        <div class="products-scroll" id="newContainer"></div>
+    </div>
 
-  <!-- Новинки -->
-  <div class="section" id="newSection" style="display: none;">
-    <div class="section-header"><h2 class="section-title">Новинки</h2></div>
-    <div class="products-scroll" id="newContainer"></div>
-  </div>
-
-  <!-- Отзывы -->
-  <div class="reviews-card">
-    <i class="fas fa-message"></i>
-    <p class="reviews-text">Честные отзывы игроков, Telegram-канал</p>
-    <button class="reviews-btn" id="reviewsBtn"><i class="fab fa-telegram"></i> Читать</button>
-  </div>
+    <!-- Отзывы -->
+    <div class="reviews-card">
+        <i class="fas fa-message"></i>
+        <p class="reviews-text">Честные отзывы игроков, Telegram-канал</p>
+        <button class="reviews-btn" id="reviewsBtn"><i class="fab fa-telegram"></i> Читать</button>
+    </div>
 </div>
 
 <div id="nav-placeholder"></div>
 
 <script>
-  // ========== ЗАГРУЗКА КОМПОНЕНТОВ ==========
-  fetch('/components/header.html')
-    .then(res => res.text())
-    .then(html => document.getElementById('header-placeholder').innerHTML = html);
-  fetch('/components/nav-bar.html')
-    .then(res => res.text())
-    .then(html => document.getElementById('nav-placeholder').innerHTML = html)
-    .then(() => {
-      // подсветка активного пункта меню
-      const links = document.querySelectorAll('.nav-item-glass');
-      links.forEach(link => {
-        if (link.getAttribute('href') === 'index.html') link.classList.add('active');
-      });
+    // Загружаем компоненты
+    Promise.all([
+        fetch('components/header.html').then(r => r.text()),
+        fetch('components/nav-bar.html').then(r => r.text())
+    ]).then(([headerHtml, navHtml]) => {
+        document.getElementById('header-placeholder').innerHTML = headerHtml;
+        document.getElementById('nav-placeholder').innerHTML = navHtml;
+        
+        // После загрузки шапки — вешаем обработчики
+        const userAvatar = document.getElementById('userAvatar');
+        if (userAvatar) userAvatar.addEventListener('click', () => location.href = 'account.html');
+        
+        const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
+        const avatarImg = document.getElementById('avatarImg');
+        if (avatarImg) {
+            if (user?.photo_url) avatarImg.src = user.photo_url;
+            else avatarImg.src = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
+        }
+        
+        // Подсветка активного пункта меню
+        document.querySelectorAll('.nav-item').forEach(link => {
+            if (link.getAttribute('href') === 'index.html') link.classList.add('active');
+        });
+    }).catch(console.error);
+
+    // Telegram
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+        tg.expand();
+        tg.enableClosingConfirmation();
+        tg.setHeaderColor('#0c0c0e');
+        tg.setBackgroundColor('#0c0c0e');
+    }
+
+    // Обработчики (после загрузки DOM)
+    document.addEventListener('DOMContentLoaded', () => {
+        const moco = document.getElementById('mocoTeaser');
+        if (moco) moco.addEventListener('click', () => location.href = 'game.html?game=MoCo');
+        
+        const reviewsBtn = document.getElementById('reviewsBtn');
+        if (reviewsBtn) reviewsBtn.addEventListener('click', () => window.open('https://t.me/akchotzivi', '_blank'));
     });
 
-  // ========== ИНИЦИАЛИЗАЦИЯ TELEGRAM ==========
-  const tg = window.Telegram.WebApp;
-  tg.expand();
-  tg.enableClosingConfirmation();
-  tg.setHeaderColor('#0c0c0e');
-  tg.setBackgroundColor('#0c0c0e');
+    // Загрузка данных
+    const DATA_BASE = 'https://raw.githubusercontent.com/squad-life/squad-life.github.io/main/data/';
+    let allOffers = [];
+    let gamesList = [];
 
-  // аватар
-  const user = tg.initDataUnsafe.user;
-  setTimeout(() => {
-    const avatarImg = document.getElementById('avatar-img');
-    if (avatarImg) {
-      if (user?.photo_url) avatarImg.src = user.photo_url;
-      else avatarImg.src = 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
+    async function loadData() {
+        try {
+            const [offersRes, gamesRes, collectionsRes] = await Promise.all([
+                fetch(`${DATA_BASE}all_offers.json`),
+                fetch(`${DATA_BASE}games.json`),
+                fetch(`${DATA_BASE}collections.json`)
+            ]);
+            if (offersRes.ok) allOffers = (await offersRes.json()).offers || [];
+            if (gamesRes.ok) gamesList = await gamesRes.json();
+            let collections = { popular: [], discount: [], new: [] };
+            if (collectionsRes.ok) collections = await collectionsRes.json();
+
+            renderGames();
+            renderSections(collections);
+        } catch(e) { console.error('Ошибка загрузки:', e); }
     }
-    const userAvatar = document.getElementById('user-avatar');
-    if (userAvatar) userAvatar.addEventListener('click', () => window.location.href = 'account.html');
-  }, 200);
 
-  // Моко тизер
-  const moko = document.getElementById('mokoTeaser');
-  if (moko) moko.addEventListener('click', () => window.location.href = 'game.html?game=Moko');
-
-  // кнопка отзывов
-  const reviewsBtn = document.getElementById('reviewsBtn');
-  if (reviewsBtn) reviewsBtn.addEventListener('click', () => window.open('https://t.me/akchotzivi', '_blank'));
-
-  // ========== ЗАГРУЗКА ДАННЫХ ==========
-  const DATA_BASE = 'https://raw.githubusercontent.com/squad-life/squad-life.github.io/main/data/';
-  let allOffers = [];
-  let gamesList = [];
-
-  async function loadData() {
-    try {
-      const [offersRes, gamesRes, collectionsRes] = await Promise.all([
-        fetch(`${DATA_BASE}all_offers.json`),
-        fetch(`${DATA_BASE}games.json`),
-        fetch(`${DATA_BASE}collections.json`)
-      ]);
-      if (offersRes.ok) allOffers = (await offersRes.json()).offers || [];
-      if (gamesRes.ok) gamesList = await gamesRes.json();
-      let collections = { popular: [], discount: [], new: [] };
-      if (collectionsRes.ok) collections = await collectionsRes.json();
-
-      renderGames();
-      renderSections(collections);
-    } catch (e) {
-      console.error('Ошибка загрузки:', e);
+    function renderGames() {
+        const container = document.getElementById('gamesContainer');
+        if (!gamesList.length) { container.innerHTML = '<div style="color:#888; padding:12px;">Игры не загружены</div>'; return; }
+        container.innerHTML = '';
+        gamesList.slice(0, 8).forEach((game, idx) => {
+            const card = document.createElement('div');
+            card.className = `game-card fade-in delay-${(idx % 4) + 1}`;
+            card.onclick = () => location.href = `game.html?game=${encodeURIComponent(game.name)}`;
+            card.innerHTML = `
+                <div class="game-icon"><img src="${game.logo}" alt="${game.name}" onerror="this.src='https://placehold.co/86x86/1c1c20/7c4dff?text=${game.name.charAt(0)}'"></div>
+                <div class="game-name">${game.name}</div>
+            `;
+            container.appendChild(card);
+        });
     }
-  }
 
-  function renderGames() {
-    const container = document.getElementById('gamesContainer');
-    if (!gamesList.length) { container.innerHTML = '<div style="color:#888; padding:12px;">Игры не загружены</div>'; return; }
-    container.innerHTML = '';
-    gamesList.slice(0, 8).forEach((game, idx) => {
-      const card = document.createElement('div');
-      card.className = `game-card fade-in delay-${(idx % 4) + 1}`;
-      card.onclick = () => window.location.href = `game.html?game=${encodeURIComponent(game.name)}`;
-      card.innerHTML = `
-        <div class="game-icon"><img src="${game.logo}" alt="${game.name}" onerror="this.src='https://placehold.co/86x86/1c1c20/7c4dff?text=${game.name.charAt(0)}'"></div>
-        <div class="game-name">${game.name}</div>
-      `;
-      container.appendChild(card);
-    });
-  }
-
-  function renderSections(collections) {
-    // Скидки
-    if (collections.discount?.length) {
-      const discountProducts = collections.discount.map(id => allOffers.find(o => o.id === id)).filter(Boolean);
-      if (discountProducts.length) {
-        document.getElementById('discountSection').style.display = 'block';
-        renderProductList(discountProducts, 'discountContainer');
-      }
+    function renderSections(collections) {
+        // Скидки
+        if (collections.discount?.length) {
+            const products = collections.discount.map(id => allOffers.find(o => o.id === id)).filter(Boolean);
+            if (products.length) {
+                document.getElementById('discountSection').style.display = 'block';
+                renderProductList(products, 'discountContainer');
+            }
+        }
+        // Новинки
+        if (collections.new?.length) {
+            const products = collections.new.map(id => allOffers.find(o => o.id === id)).filter(Boolean);
+            if (products.length) {
+                document.getElementById('newSection').style.display = 'block';
+                renderProductList(products, 'newContainer');
+            }
+        }
+        // Популярное
+        let popularProducts = [];
+        if (collections.popular?.length) {
+            popularProducts = collections.popular.map(id => allOffers.find(o => o.id === id)).filter(Boolean);
+        }
+        if (!popularProducts.length) popularProducts = allOffers.slice(0, 6);
+        renderProductList(popularProducts, 'popularContainer');
     }
-    // Новинки
-    if (collections.new?.length) {
-      const newProducts = collections.new.map(id => allOffers.find(o => o.id === id)).filter(Boolean);
-      if (newProducts.length) {
-        document.getElementById('newSection').style.display = 'block';
-        renderProductList(newProducts, 'newContainer');
-      }
+
+    function renderProductList(products, containerId) {
+        const container = document.getElementById(containerId);
+        if (!products.length) { container.innerHTML = '<div style="color:#888; padding:24px;">Нет товаров</div>'; return; }
+        container.innerHTML = '';
+        products.forEach((product, idx) => {
+            let basePrice = product.price || 0;
+            if (product.variants?.length) basePrice = product.variants[0].price;
+            const hasDiscount = product.discount > 0;
+            let finalPrice = hasDiscount ? Math.round(basePrice * (1 - product.discount / 100)) : basePrice;
+            let priceHtml = `<div class="product-price">${finalPrice} ₽</div>`;
+            let discountHtml = '';
+            if (hasDiscount) {
+                priceHtml = `<div class="price-row"><div class="product-price">${finalPrice} ₽</div><div class="old-price">${basePrice} ₽</div></div>`;
+                discountHtml = `<div class="discount-badge">-${product.discount}%</div>`;
+            }
+            const card = document.createElement('div');
+            card.className = `product-card fade-in delay-${(idx % 4) + 1}`;
+            card.onclick = () => location.href = `offer.html?id=${product.id}`;
+            card.innerHTML = `
+                <div class="product-banner" id="banner-${product.id}">
+                    <img src="${product.banner1}" class="active" alt="" onerror="this.src='https://placehold.co/300x300/1c1c20/7c4dff?text=No+Image'">
+                    <img src="${product.banner2}" alt="" onerror="this.style.display='none'">
+                </div>
+                <div class="product-info">
+                    <div class="product-name">${escapeHtml(product.name)}</div>
+                    ${priceHtml}
+                    ${discountHtml}
+                </div>
+            `;
+            container.appendChild(card);
+            startBannerRotation(product.id);
+        });
     }
-    // Популярное (если нет — берём первые 6 товаров)
-    let popularProducts = [];
-    if (collections.popular?.length) {
-      popularProducts = collections.popular.map(id => allOffers.find(o => o.id === id)).filter(Boolean);
+
+    function startBannerRotation(id) {
+        const div = document.getElementById(`banner-${id}`);
+        if (!div) return;
+        const imgs = div.querySelectorAll('img');
+        if (imgs.length < 2) return;
+        let current = 0;
+        setInterval(() => {
+            imgs[current].classList.remove('active');
+            current = (current + 1) % imgs.length;
+            imgs[current].classList.add('active');
+        }, 5000);
     }
-    if (!popularProducts.length) {
-      popularProducts = allOffers.slice(0, 6);
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
     }
-    renderProductList(popularProducts, 'popularContainer');
-  }
 
-  function renderProductList(products, containerId) {
-    const container = document.getElementById(containerId);
-    if (!products.length) { container.innerHTML = '<div style="color:#888; padding:24px;">Нет товаров</div>'; return; }
-    container.innerHTML = '';
-    products.forEach((product, idx) => {
-      const price = product.variants?.length ? product.variants[0].price : (product.price || 0);
-      const hasDiscount = product.discount > 0;
-      let finalPrice = hasDiscount ? Math.round(price * (1 - product.discount / 100)) : price;
-      let priceHtml = `<div class="product-price">${finalPrice} ₽</div>`;
-      let discountHtml = '';
-      if (hasDiscount) {
-        priceHtml = `<div class="price-row"><div class="product-price">${finalPrice} ₽</div><div class="old-price">${price} ₽</div></div>`;
-        discountHtml = `<div class="discount-badge">-${product.discount}%</div>`;
-      }
-      const card = document.createElement('div');
-      card.className = `product-card fade-in delay-${(idx % 4) + 1}`;
-      card.onclick = () => window.location.href = `offer.html?id=${product.id}`;
-      card.innerHTML = `
-        <div class="product-banner" id="banner-${product.id}">
-          <img src="${product.banner1}" class="active" alt="">
-          <img src="${product.banner2}" alt="">
-        </div>
-        <div class="product-info">
-          <div class="product-name">${escapeHtml(product.name)}</div>
-          ${priceHtml}
-          ${discountHtml}
-        </div>
-      `;
-      container.appendChild(card);
-      startBannerRotation(product.id);
-    });
-  }
-
-  function startBannerRotation(id) {
-    const div = document.getElementById(`banner-${id}`);
-    if (!div) return;
-    const imgs = div.querySelectorAll('img');
-    if (imgs.length < 2) return;
-    let current = 0;
-    setInterval(() => {
-      imgs[current].classList.remove('active');
-      current = (current + 1) % imgs.length;
-      imgs[current].classList.add('active');
-    }, 5000);
-  }
-
-  function escapeHtml(str) {
-    if (!str) return '';
-    return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
-  }
-
-  loadData();
+    loadData();
 </script>
 </body>
 </html>
