@@ -1,38 +1,40 @@
-<header style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0 20px 0; position: sticky; top: 0; background: transparent; z-index: 10;">
-    <div style="display: flex; align-items: center; gap: 12px;">
-        <button class="back-btn" onclick="history.back()" style="background: rgba(20,20,30,0.6); backdrop-filter: blur(8px); border: none; color: white; font-size: 20px; cursor: pointer; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 1px solid rgba(124,77,255,0.3);">
-            <i class="fas fa-arrow-left"></i>
-        </button>
-        <div class="logo">
-            <img src="/assets/logo.png" alt="Life Shop" style="height: 48px; width: auto;" onerror="this.src='https://placehold.co/200x60/141416/7c4dff?text=Life+Shop'">
-        </div>
-    </div>
-    <div class="user-avatar" id="user-avatar" style="width: 42px; height: 42px; border-radius: 50%; background: rgba(20,20,30,0.6); backdrop-filter: blur(8px); border: 1px solid rgba(124,77,255,0.4); overflow: hidden; cursor: pointer;">
-        <img id="avatar-img" src="" alt="avatar" style="width: 100%; height: 100%; object-fit: cover;">
-    </div>
+<header>
+  <div class="logo">
+    <img id="logo-img" src="https://raw.githubusercontent.com/squad-life/squad-life.github.io/main/assets/logo.png" alt="Life Shop" onerror="this.src='https://placehold.co/200x60/141416/7c4dff?text=Life+Shop'">
+  </div>
+  <div class="user-avatar" id="user-avatar">
+    <img id="avatar-img" src="" alt="avatar">
+  </div>
 </header>
 
 <style>
-    .back-btn:active { transform: scale(0.95); background: rgba(124,77,255,0.2); }
-    .user-avatar:active { transform: scale(0.95); }
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0 20px 0;
+  background: transparent;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.logo img {
+  height: 58px;
+  width: auto;
+  display: block;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+}
+.user-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(20,20,30,0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(124, 77, 255, 0.4);
+  overflow: hidden;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.user-avatar:active { transform: scale(0.96); }
+.user-avatar img { width: 100%; height: 100%; object-fit: cover; }
 </style>
-
-<script>
-    // Эта часть выполняется только если header загружается через fetch
-    (function initHeader() {
-        const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
-        if (user) {
-            const avatarImg = document.getElementById('avatar-img');
-            if (avatarImg) {
-                avatarImg.src = user.photo_url || 'https://cdn-icons-png.flaticon.com/512/847/847969.png';
-            }
-        }
-        const userAvatar = document.getElementById('user-avatar');
-        if (userAvatar && !userAvatar.hasClickListener) {
-            userAvatar.hasClickListener = true;
-            userAvatar.addEventListener('click', () => {
-                window.location.href = '/account.html';
-            });
-        }
-    })();
-</script>
